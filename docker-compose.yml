@@ -5,7 +5,7 @@ services:
       context: ./api/.
       dockerfile: ${PWD}/api/Dockerfile
     ports:
-      - "8090:80"
+      - "8050:80"
     volumes:
       - ./api/.:/var/www
     links:
@@ -21,11 +21,11 @@ services:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
       MYSQL_USER_FILE: /run/secrets/mysql-user
       MYSQL_PASSWORD_FILE: /run/secrets/mysql-password
-      MYSQL_DATABASE : mydatabase
+      MYSQL_DATABASE : systemadb
     networks:
       - backend
     ports:
-      - "23306:3306"
+      - "23307:3306"
     volumes:
       - ${PWD}/data/configs/master/conf.d:/etc/mysql/conf.d
       - ${PWD}/data/datastoremaster:/var/lib/mysql

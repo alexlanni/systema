@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="bef3472a-ace0-40f8-a76a-c8bf675db9ac" name="10.8.0.5" url="http://10.8.0.5">
+        <fileTransfer host="10.8.0.5" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/home/systema" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

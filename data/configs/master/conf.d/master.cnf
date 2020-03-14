@@ -1,0 +1,8 @@
+[mariadb]
+log-bin
+server_id=1
+log-basename=master1
+
+# force binlog format to ROW to avoid issues with
+# replicate_do_db
+binlog_format=ROW

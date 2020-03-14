@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/data/initdb/master/000-replication-master.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/data/initdb/master/001-create-basic-structure.sql" dialect="MySQL" />
+  </component>
+</project>

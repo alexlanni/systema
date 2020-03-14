@@ -1,0 +1,53 @@
+version: "2"
+services:
+  api:
+    build:
+      context: ./api/.
+      dockerfile: ${PWD}/api/Dockerfile
+    ports:
+      - "8090:80"
+    volumes:
+      - ./api/.:/var/www
+    links:
+      - datastoremaster
+    networks:
+      - backend
+      - frontend
+
+  datastoremaster:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
+      MYSQL_USER_FILE: /run/secrets/mysql-user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql-password
+      MYSQL_DATABASE : mydatabase
+    networks:
+      - backend
+    ports:
+      - "23306:3306"
+    volumes:
+      - ${PWD}/data/configs/master/conf.d:/etc/mysql/conf.d
+      - ${PWD}/data/datastoremaster:/var/lib/mysql
+      - ${PWD}/secrets:/run/secrets
+      - ${PWD}/data/initdb/master:/docker-entrypoint-initdb.d
+
+  datastoreslaveA:
+    image: mariadb
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ${PWD}/data/configs/slave/conf.d:/etc/mysql/conf.d
+      - ${PWD}/data/datastoreslavea:/var/lib/mysql
+      - ${PWD}/secrets:/run/secrets
+      - ${PWD}/data/initdb/slave:/docker-entrypoint-initdb.d
+    depends_on:
+      - datastoremaster
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

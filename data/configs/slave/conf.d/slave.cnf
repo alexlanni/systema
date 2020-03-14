@@ -1,0 +1,5 @@
+[mariadb]
+server_id=1000
+relay-log = /var/log/mysql/mysql-relay-bin.log
+log_bin = /var/log/mysql/mysql-bin.log
+replicate-do-db=systemadb

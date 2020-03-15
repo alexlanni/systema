@@ -52,6 +52,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Systema\\": "src/Systema/src/",
             "Application\\": "module/Application/src/"
         }
     },

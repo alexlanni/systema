@@ -2,15 +2,6 @@
 
 2020 - Alessandro Lanni
 
-## Docker-Compose UID
-
-Prima di avviare docker-compose up -d, lanciare:
-
-````
-export UID=${UID}
-export GID=${GID}
-````
-
 
 ## TODO
 
@@ -18,14 +9,12 @@ export GID=${GID}
 - Configurare oauth2
 - Aggiungere mezzio
 
-## Middleware
+## Doctrine
 
-Unit test:
+Come generare le entita' dal DB:
 
-`
-docker-compose exec middleware composer check
-`
+````
+docker-compose exec api php ./vendor/bin/doctrine-module orm:convert-mapping --namespace="Systema\\Entities\\" --force --from-database annotation ./EXPORT/ --generate-methods="true"
 
-Mezzio CLI:
-
-`docker-compose exec middleware composer mezzio`
+docker-compose exec api php ./vendor/bin/doctrine-module orm:generate-entities --update-entities="true" --generate-methods="true" ./EXPORT/.
+````

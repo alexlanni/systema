@@ -4,12 +4,17 @@ services:
     build:
       context: ./api/.
       dockerfile: ${PWD}/api/Dockerfile
+      args:
+        HOST_USER_UID: 1004
     ports:
       - "8050:80"
     volumes:
       - ./api/.:/var/www
     links:
       - datastoremaster
+
+
+
     networks:
       - backend
       - frontend

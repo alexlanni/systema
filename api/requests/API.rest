@@ -1,0 +1,11 @@
+### GET ALL local type
+
+GET http://{{host}}:{{port}}/local-type
+Accept: application/json
+
+### GET A local type
+
+GET http://{{host}}:{{port}}/local-type/1
+Accept: application/json
+
+###

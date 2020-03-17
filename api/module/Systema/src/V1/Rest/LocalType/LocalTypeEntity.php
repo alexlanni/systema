@@ -2,7 +2,7 @@
 
 /**
  *
- * EntityType
+ * Definizione dell'entita LocalType
  *
  */
 
@@ -15,6 +15,10 @@ class LocalTypeEntity
     /** @var string $label */
     public $label;
 
+    /**
+     * LocalTypeEntity constructor.
+     * @param null $object
+     */
     public function __construct($object=null)
     {
         if($object instanceof \Systema\Entities\LocalType)

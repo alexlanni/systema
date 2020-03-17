@@ -60,7 +60,17 @@ class LocalTypeResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        $query = $this->systemaSrv->fetchAllLocalType(['localTypeId'=>$id]);
+
+        try {
+            $localType = $query->getSingleResult();
+        }catch(\Doctrine\ORM\NonUniqueResultException $ex){
+            return new ApiProblem(500, 'C\'é stato un problema nel reperire il dato [1]');
+        }catch (\Doctrine\ORM\NoResultException $ex) {
+            return new ApiProblem(404, 'Non é stato trovato il Local Type');
+        }
+
+        return new LocalTypeEntity($localType);
     }
 
     /**
@@ -71,12 +81,10 @@ class LocalTypeResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        $localTypeRepo = $this->systemaSrv->getORM()->getRepository(LocalType::class);
-        $query = $localTypeRepo->createQueryBuilder('lt')->getQuery();
-
+        $query = $this->systemaSrv->fetchAllLocalType();
         $adapter = new DoctrinePaginator( new Paginator($query));
 
-        return  new LocalTypeCollection($adapter);;
+        return  new LocalTypeCollection($adapter);
     }
 
     /**

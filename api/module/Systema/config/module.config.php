@@ -131,4 +131,24 @@ return [
             ],
         ],
     ],
+    'api-tools-mvc-auth' => [
+        'authorization' => [
+            'Systema\\V1\\Rest\\LocalType\\Controller' => [
+                'collection' => [
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ],
+                'entity' => [
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ],
+            ],
+        ],
+    ],
 ];

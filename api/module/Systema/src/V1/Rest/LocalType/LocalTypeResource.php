@@ -60,6 +60,11 @@ class LocalTypeResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
+        $id = $this->getIdentity();
+
+        var_dump($id);
+        die;
+
         $query = $this->systemaSrv->fetchAllLocalType(['localTypeId'=>$id]);
 
         try {

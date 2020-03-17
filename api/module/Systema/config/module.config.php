@@ -5,6 +5,12 @@ return [
             \Systema\Service\SystemaService::class => \Systema\Service\SystemaServiceFacotry::class,
             \Systema\V1\Rest\Ping\PingResource::class => \Systema\V1\Rest\Ping\PingResourceFactory::class,
             \Systema\V1\Rest\LocalType\LocalTypeResource::class => \Systema\V1\Rest\LocalType\LocalTypeResourceFactory::class,
+            \Systema\Authentication\AuthAdapter::class => \Systema\Authentication\AuthAdapterFactory::class,
+        ],
+        'delegators' => [
+            \Laminas\ApiTools\MvcAuth\Authentication\DefaultAuthenticationListener::class => [
+                \Systema\Authentication\AuthDelegatorFactory::class,
+            ],
         ],
     ],
     'router' => [
@@ -132,6 +138,16 @@ return [
         ],
     ],
     'api-tools-mvc-auth' => [
+        'authentication' => [
+            'adapters' => [
+                'SystemaAuth' => [
+                    'adapter' => \Systema\Authentication\AuthAdapter::class,
+                    'options' => [
+                        //Da decidere
+                    ],
+                    ]
+                ]
+            ],
         'authorization' => [
             'Systema\\V1\\Rest\\LocalType\\Controller' => [
                 'collection' => [
@@ -142,7 +158,7 @@ return [
                     'DELETE' => false,
                 ],
                 'entity' => [
-                    'GET' => false,
+                    'GET' => true,
                     'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,

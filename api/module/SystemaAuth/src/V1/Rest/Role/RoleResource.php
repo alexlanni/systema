@@ -1,11 +1,21 @@
 <?php
 namespace SystemaAuth\V1\Rest\Role;
 
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
+use Systema\Entities\Role;
+use Systema\Service\SystemaService;
 
 class RoleResource extends AbstractResourceListener
 {
+    private SystemaService $service;
+
+    public function __construct(SystemaService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Create a resource
      *
@@ -47,7 +57,17 @@ class RoleResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        $query = $this->service->getFetchAllRoleQuery(['roleId'=>$id]);
+
+        try {
+            $role = $query->getSingleResult();
+        }catch(\Doctrine\ORM\NonUniqueResultException $ex){
+            return new ApiProblem(500, 'C\'é stato un problema nel reperire il dato [1]');
+        }catch (\Doctrine\ORM\NoResultException $ex) {
+            return new ApiProblem(404, 'Non é stato trovato il Local Type');
+        }
+
+        return new RoleEntity($role);
     }
 
     /**
@@ -58,7 +78,9 @@ class RoleResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        return new ApiProblem(405, 'The GET method has not been defined for collections');
+        $query = $this->service->getFetchAllRoleQuery([]);
+
+        return new RoleCollection($query);
     }
 
     /**

@@ -17,6 +17,9 @@ class LocalTypeEntity
 
     /**
      * LocalTypeEntity constructor.
+     *
+     * Il costruttore serve a spalmare i dati dell'Entita' Doctrine nelle proprieta' dell'Entita' REST
+     *
      * @param null $object
      */
     public function __construct($object=null)

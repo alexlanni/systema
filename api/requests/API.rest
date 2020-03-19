@@ -8,4 +8,13 @@ Accept: application/json
 GET http://{{host}}:{{port}}/local-type/1
 Accept: application/json
 
+### GET All Roles
+GET http://{{host}}:{{port}}/role
+Accept: application/json
+
+### GET Single Role
+GET http://{{host}}:{{port}}/role/1
+Accept: application/json
+
 ###
+

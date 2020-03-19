@@ -6,6 +6,7 @@ namespace Systema\Service;
 
 use Doctrine\ORM\EntityManager;
 use Systema\Entities\LocalType;
+use Systema\Entities\Role;
 use function PHPUnit\Framework\isEmpty;
 
 class SystemaService
@@ -33,12 +34,12 @@ class SystemaService
     }
 
     /**
-     * Ottiene Query del FetchAll
+     * Ottine la Query per il FetchAll dei LocalType
      *
      * @param array $params
      * @return \Doctrine\ORM\Query
      */
-    public function fetchAllLocalType($params=[])
+    public function getFetchLocalTypesQuery($params=[])
     {
         $localTypeRepo = $this->getORM()
             ->getRepository(LocalType::class);
@@ -52,5 +53,22 @@ class SystemaService
     }
 
 
+    /**
+     * Ottine la Query per il FetchAll dei Role
+     *
+     * @param array $params
+     * @return \Doctrine\ORM\Query
+     */
+    public function getFetchAllRoleQuery($params=[])
+    {
+        $repoRoles = $this->getORM()->getRepository(Role::class);
+        $queryBuilder = $repoRoles->createQueryBuilder('ro');
+        $queryBuilder->andWhere('1 = 1');
+        if (!empty($params['roleId'])) {
+            $queryBuilder->andWhere('ro.roleId = :roleId')
+                ->setParameter('roleId', $params['roleId'], \PDO::PARAM_INT );
+        }
+        return $queryBuilder->getQuery();
+    }
 
 }

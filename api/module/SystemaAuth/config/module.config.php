@@ -23,7 +23,7 @@ return [
             'systema-auth.rest.role' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/role[/:role_id]',
+                    'route' => '/role[/:roleId]',
                     'defaults' => [
                         'controller' => 'SystemaAuth\\V1\\Rest\\Role\\Controller',
                     ],
@@ -93,7 +93,7 @@ return [
         'SystemaAuth\\V1\\Rest\\Role\\Controller' => [
             'listener' => \SystemaAuth\V1\Rest\Role\RoleResource::class,
             'route_name' => 'systema-auth.rest.role',
-            'route_identifier_name' => 'role_id',
+            'route_identifier_name' => 'roleId',
             'collection_name' => 'role',
             'entity_http_methods' => [
                 0 => 'GET',
@@ -243,7 +243,7 @@ return [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'systema-auth.rest.login',
                 'route_identifier_name' => 'login_id',
-                'hydrator' => \Laminas\Hydrator\ArraySerializable::class,
+                'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Login\LoginCollection::class => [
                 'entity_identifier_name' => 'id',
@@ -252,22 +252,22 @@ return [
                 'is_collection' => true,
             ],
             \SystemaAuth\V1\Rest\Role\RoleEntity::class => [
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'roleId',
                 'route_name' => 'systema-auth.rest.role',
-                'route_identifier_name' => 'role_id',
-                'hydrator' => \Laminas\Hydrator\ArraySerializable::class,
+                'route_identifier_name' => 'roleId',
+                'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Role\RoleCollection::class => [
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'roleId',
                 'route_name' => 'systema-auth.rest.role',
-                'route_identifier_name' => 'role_id',
+                'route_identifier_name' => 'roleId',
                 'is_collection' => true,
             ],
             \SystemaAuth\V1\Rest\Resource\ResourceEntity::class => [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'systema-auth.rest.resource',
                 'route_identifier_name' => 'resource_id',
-                'hydrator' => \Laminas\Hydrator\ArraySerializable::class,
+                'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Resource\ResourceCollection::class => [
                 'entity_identifier_name' => 'id',
@@ -279,7 +279,7 @@ return [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'systema-auth.rest.session',
                 'route_identifier_name' => 'session_id',
-                'hydrator' => \Laminas\Hydrator\ArraySerializable::class,
+                'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Session\SessionCollection::class => [
                 'entity_identifier_name' => 'id',
@@ -291,7 +291,7 @@ return [
                 'entity_identifier_name' => 'id',
                 'route_name' => 'systema-auth.rest.address',
                 'route_identifier_name' => 'address_id',
-                'hydrator' => \Laminas\Hydrator\ArraySerializable::class,
+                'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Address\AddressCollection::class => [
                 'entity_identifier_name' => 'id',

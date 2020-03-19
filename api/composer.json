@@ -75,7 +75,7 @@
             "@development-enable"
         ],
         "serve": "php -S 0.0.0.0:8080 -t public/",
-        "test": "phpunit"
+        "test": "./vendor/bin/phpunit"
     },
     "replace": {
         "zfcampus/zf-apigility-skeleton": "1.5.2p1"

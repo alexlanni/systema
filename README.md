@@ -19,6 +19,29 @@ docker-compose exec api php ./vendor/bin/doctrine-module orm:convert-mapping --n
 docker-compose exec api php ./vendor/bin/doctrine-module orm:generate-entities --update-entities="true" --generate-methods="true" ./EXPORT/.
 ````
 
+#### Collection, Paginators e Adapters
+
+Per consentire il passaggio dei dati daDoctrine a REST, e' utile ottenere con il queryBuilder la Query:
+
+`````
+$localTypeRepo = $this->getORM()->getRepository(LocalType::class);
+$queryBuilder = $localTypeRepo->createQueryBuilder('lt');
+$query = $queryBuilder->getQuery();
+`````
+
+Ottenuta la query, si passa alla creazione di un PaginatorAdapter di Doctrine:
+
+````
+$adapter = new \DoctrineORMModule\Paginator\Adapter\DoctrinePaginator(new \Doctrine\ORM\Tools\Pagination\Paginator($adapter));
+````
+
+L'adapter ottenuto puo' essere usato come Collection.
+
+###### Abstract Systema\Paginator\PaginatorAbstract
+
+Vedere i file `api/module/Systema/src/V1/Rest/LocalType/LocalTypeCollection.php` per capire l'implementazione.
+
+
 
 ## Authentication e Authorization
 

@@ -1,2 +1,3 @@
 api/vendor
 secrets/mysql-*
+/api/config/modules.config.old

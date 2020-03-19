@@ -1,12 +1,10 @@
 <?php
 namespace Systema\V1\Rest\LocalType;
 
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
-use Systema\Entities\LocalType;
 use Systema\Service\SystemaService;
 
 class LocalTypeResource extends AbstractResourceListener
@@ -61,11 +59,7 @@ class LocalTypeResource extends AbstractResourceListener
     public function fetch($id)
     {
         $id = $this->getIdentity();
-
-        var_dump($id);
-        die;
-
-        $query = $this->systemaSrv->fetchAllLocalType(['localTypeId'=>$id]);
+        $query = $this->systemaSrv->getFetchLocalTypesQuery(['localTypeId'=>$id]);
 
         try {
             $localType = $query->getSingleResult();
@@ -86,10 +80,9 @@ class LocalTypeResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        $query = $this->systemaSrv->fetchAllLocalType();
-        $adapter = new DoctrinePaginator( new Paginator($query));
+        $query = $this->systemaSrv->getFetchLocalTypesQuery();
 
-        return  new LocalTypeCollection($adapter);
+        return  new LocalTypeCollection($query);
     }
 
     /**

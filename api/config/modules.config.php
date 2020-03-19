@@ -30,4 +30,5 @@ return [
     'Application',
     'Systema',
     'Place',
+    'SystemaAuth',
 ];

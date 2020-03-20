@@ -3,9 +3,17 @@ namespace SystemaAuth\V1\Rest\Login;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
+use Systema\Service\SystemaService;
 
 class LoginResource extends AbstractResourceListener
 {
+
+    private SystemaService $service;
+
+    public function __construct(SystemaService $service)
+    {
+        $this->service = $service;
+    }
     /**
      * Create a resource
      *
@@ -14,7 +22,23 @@ class LoginResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+
+        try {
+            $newLogin = $this->service->registerNewLogin($data->email, $data->password);
+
+            return new LoginEntity($newLogin);
+
+        } catch ( \Exception $ex ){
+            if ($ex->getCode() == $this->service::ERR_DATABASE_ERR) {
+                return new ApiProblem(500, $ex->getMessage());
+            }else if ($ex->getCode() == $this->service::ERR_EMAIL_ALREADY_USED) {
+                return new ApiProblem(422, $ex->getMessage());
+            } else {
+                return new ApiProblem(500, 'Unknow error');
+            }
+        }
+
+
     }
 
     /**

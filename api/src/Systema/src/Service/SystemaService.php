@@ -5,12 +5,18 @@ namespace Systema\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use Laminas\Crypt\Password\Bcrypt;
 use Systema\Entities\LocalType;
+use Systema\Entities\Login;
 use Systema\Entities\Role;
+use SystemaAuth\V1\Rest\Login\LoginEntity;
 use function PHPUnit\Framework\isEmpty;
 
 class SystemaService
 {
+
+    public const ERR_EMAIL_ALREADY_USED = -1;
+    public const ERR_DATABASE_ERR = -2;
 
     private \Doctrine\ORM\EntityManager $orm;
 
@@ -34,6 +40,7 @@ class SystemaService
     }
 
     /**
+     * TODO: spostare in Repository
      * Ottine la Query per il FetchAll dei LocalType
      *
      * @param array $params
@@ -54,6 +61,7 @@ class SystemaService
 
 
     /**
+     * TODO: spostare in Repository
      * Ottine la Query per il FetchAll dei Role
      *
      * @param array $params
@@ -69,6 +77,44 @@ class SystemaService
                 ->setParameter('roleId', $params['roleId'], \PDO::PARAM_INT );
         }
         return $queryBuilder->getQuery();
+    }
+
+
+    /**
+     * Crea un nuovo utente/login
+     *
+     * @param string $email
+     * @param string $password
+     * @return LoginEntity
+     * @throws \Exception
+     */
+    public function registerNewLogin(string $email, string $password)
+    {
+        $loginRepo = $this->getORM()->getRepository(Login::class);
+
+        $emailAlreadyExists = $loginRepo->findBy(['email'=>$email]);
+
+        if (count($emailAlreadyExists) == 0 ) {
+            $bcrypt = new Bcrypt();
+            $securePass = $bcrypt->create($password);
+
+            $login = new Login();
+            $login->setEmail($email)
+                ->setEnabled(1)
+                ->setPassword($securePass);
+
+            try {
+                $this->getORM()->persist($login);
+                $this->getORM()->flush();
+            }catch (\Exception $ex ) {
+                throw new \Exception($ex->getMessage(),self::ERR_DATABASE_ERR);
+            }
+
+            return $login;
+        }else{
+            throw new \Exception('Email already used',self::ERR_EMAIL_ALREADY_USED);
+        }
+
     }
 
 }

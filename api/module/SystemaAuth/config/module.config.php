@@ -14,7 +14,7 @@ return [
             'systema-auth.rest.login' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/login[/:login_id]',
+                    'route' => '/login[/:loginId]',
                     'defaults' => [
                         'controller' => 'SystemaAuth\\V1\\Rest\\Login\\Controller',
                     ],
@@ -71,13 +71,12 @@ return [
         'SystemaAuth\\V1\\Rest\\Login\\Controller' => [
             'listener' => \SystemaAuth\V1\Rest\Login\LoginResource::class,
             'route_name' => 'systema-auth.rest.login',
-            'route_identifier_name' => 'login_id',
+            'route_identifier_name' => 'loginId',
             'collection_name' => 'login',
             'entity_http_methods' => [
                 0 => 'GET',
-                1 => 'PATCH',
-                2 => 'PUT',
-                3 => 'DELETE',
+                1 => 'PUT',
+                2 => 'DELETE',
             ],
             'collection_http_methods' => [
                 0 => 'GET',
@@ -97,13 +96,11 @@ return [
             'collection_name' => 'role',
             'entity_http_methods' => [
                 0 => 'GET',
-                1 => 'PATCH',
-                2 => 'PUT',
-                3 => 'DELETE',
+                1 => 'PUT',
+                2 => 'DELETE',
             ],
             'collection_http_methods' => [
                 0 => 'GET',
-                1 => 'POST',
             ],
             'collection_query_whitelist' => [],
             'page_size' => 25,
@@ -240,15 +237,15 @@ return [
     'api-tools-hal' => [
         'metadata_map' => [
             \SystemaAuth\V1\Rest\Login\LoginEntity::class => [
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'loginId',
                 'route_name' => 'systema-auth.rest.login',
-                'route_identifier_name' => 'login_id',
+                'route_identifier_name' => 'loginId',
                 'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Login\LoginCollection::class => [
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'loginId',
                 'route_name' => 'systema-auth.rest.login',
-                'route_identifier_name' => 'login_id',
+                'route_identifier_name' => 'loginId',
                 'is_collection' => true,
             ],
             \SystemaAuth\V1\Rest\Role\RoleEntity::class => [
@@ -298,6 +295,129 @@ return [
                 'route_name' => 'systema-auth.rest.address',
                 'route_identifier_name' => 'address_id',
                 'is_collection' => true,
+            ],
+        ],
+    ],
+    'api-tools-mvc-auth' => [
+        'authentication' => [
+            'adapters' => [
+                'SystemaAuth' => [
+                    'adapter' => \Systema\Authentication\AuthAdapter::class,
+                    'options' => [],
+                ],
+            ],
+        ],
+        'authorization' => [
+            'SystemaAuth\\V1\\Rest\\Role\\Controller' => [
+                'collection' => [
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ],
+                'entity' => [
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => true,
+                    'PATCH' => false,
+                    'DELETE' => true,
+                ],
+            ],
+            'SystemaAuth\\V1\\Rest\\Login\\Controller' => [
+                'collection' => [
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ],
+                'entity' => [
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => true,
+                    'PATCH' => false,
+                    'DELETE' => true,
+                ],
+            ],
+        ],
+    ],
+    'api-tools-content-validation' => [
+        'SystemaAuth\\V1\\Rest\\Role\\Controller' => [
+            'input_filter' => 'SystemaAuth\\V1\\Rest\\Role\\Validator',
+        ],
+        'SystemaAuth\\V1\\Rest\\Login\\Controller' => [
+            'input_filter' => 'SystemaAuth\\V1\\Rest\\Login\\Validator',
+        ],
+    ],
+    'input_filter_specs' => [
+        'SystemaAuth\\V1\\Rest\\Role\\Validator' => [
+            0 => [
+                'required' => true,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\StringLength::class,
+                        'options' => [
+                            'min' => '3',
+                        ],
+                    ],
+                ],
+                'filters' => [],
+                'name' => 'label',
+                'description' => 'Role Label',
+                'field_type' => 'string',
+            ],
+            1 => [
+                'required' => false,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\Between::class,
+                        'options' => [
+                            'min' => '0',
+                            'max' => '1',
+                        ],
+                    ],
+                ],
+                'filters' => [],
+                'name' => 'enabled',
+                'description' => 'isEnabled',
+                'continue_if_empty' => true,
+            ],
+        ],
+        'SystemaAuth\\V1\\Rest\\Login\\Validator' => [
+            0 => [
+                'required' => true,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\EmailAddress::class,
+                        'options' => [
+
+                        ],
+                    ],
+                ],
+                'filters' => [],
+                'name' => 'email',
+            ],
+            1 => [
+                'required' => true,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\StringLength::class,
+                        'options' => [
+                            'min' => '8',
+                            'max' => '25',
+                        ],
+                    ],
+                ],
+                'filters' => [],
+                'name' => 'password',
+            ],
+            2 => [
+                'required' => false,
+                'validators' => [],
+                'filters' => [],
+                'name' => 'enabled',
+                'continue_if_empty' => true,
             ],
         ],
     ],

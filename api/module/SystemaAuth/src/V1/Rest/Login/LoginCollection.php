@@ -1,8 +1,11 @@
 <?php
 namespace SystemaAuth\V1\Rest\Login;
 
-use Laminas\Paginator\Paginator;
+use Systema\Paginator\PaginatorAbstract;
 
-class LoginCollection extends Paginator
+class LoginCollection extends PaginatorAbstract
 {
+    /** @var string $entityClass */
+    protected string $entityClass = LoginEntity::class;
+
 }

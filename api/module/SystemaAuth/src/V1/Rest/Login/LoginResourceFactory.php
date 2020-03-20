@@ -1,10 +1,15 @@
 <?php
 namespace SystemaAuth\V1\Rest\Login;
 
+use Systema\Service\SystemaService;
+
 class LoginResourceFactory
 {
     public function __invoke($services)
     {
-        return new LoginResource();
+        /** @var SystemaService $systemaSrv */
+        $systemaSrv = $services->get(SystemaService::class);
+
+        return new LoginResource($systemaSrv);
     }
 }

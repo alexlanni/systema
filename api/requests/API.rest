@@ -16,5 +16,15 @@ Accept: application/json
 GET http://{{host}}:{{port}}/role/1
 Accept: application/json
 
+### POST login
+POST http://{{host}}:{{port}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "pippo@ciccio.com",
+  "password": "testtest123"
+}
+
 ###
 

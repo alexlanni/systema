@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/api/module/Application/test" isTestSource="true" packagePrefix="ApplicationTest\" />
       <sourceFolder url="file://$MODULE_DIR$/api/module/Application/src" isTestSource="false" packagePrefix="Application\" />
       <sourceFolder url="file://$MODULE_DIR$/api/vendor" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/api/module/Systema/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/bshaffer/oauth2-server-php" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/container-interop/container-interop" />

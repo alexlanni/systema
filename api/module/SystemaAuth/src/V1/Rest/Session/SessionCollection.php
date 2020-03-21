@@ -5,4 +5,5 @@ use Laminas\Paginator\Paginator;
 
 class SessionCollection extends Paginator
 {
+
 }

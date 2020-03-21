@@ -119,6 +119,7 @@
       <path value="$PROJECT_DIR$/api/vendor/symfony/var-dumper" />
       <path value="$PROJECT_DIR$/api/vendor/symfony/polyfill-ctype" />
       <path value="$PROJECT_DIR$/api/vendor/seld/jsonlint" />
+      <path value="$PROJECT_DIR$/api/vendor/firebase/php-jwt" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />

@@ -26,5 +26,21 @@ Content-Type: application/json
   "password": "testtest123"
 }
 
+### POST Autenticazione
+POST http://{{host}}:{{port}}/session
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "pippo@ciccio.com",
+  "password": "testtest123"
+}
+
+### GET session
+
+GET http://{{host}}:{{port}}/session/a87ff679a2f3e71d2f4ca6d6552a1f91
+Accept: application/json
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZDJmNGNhNmQ2NTUyYTFmOTEiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTIxIDE1OjQxOjQyIiwiZXhwaXJlIjoiMjAyMC0wMy0yMSAxNjo0MTo0MiJ9.k5FTcbQNkcwZFXKaTDVNYd661pHsSzSh0ytGjfcR1ag
 ###
+
 

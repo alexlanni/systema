@@ -1,3 +1,4 @@
 api/vendor
 secrets/mysql-*
 /api/config/modules.config.old
+/api/data/.jwt-key

@@ -41,7 +41,7 @@ return [
             'systema-auth.rest.session' => [
                 'type' => 'Segment',
                 'options' => [
-                    'route' => '/session[/:session_id]',
+                    'route' => '/session[/:tokenId]',
                     'defaults' => [
                         'controller' => 'SystemaAuth\\V1\\Rest\\Session\\Controller',
                     ],
@@ -134,17 +134,15 @@ return [
         'SystemaAuth\\V1\\Rest\\Session\\Controller' => [
             'listener' => \SystemaAuth\V1\Rest\Session\SessionResource::class,
             'route_name' => 'systema-auth.rest.session',
-            'route_identifier_name' => 'session_id',
+            'route_identifier_name' => 'tokenId',
             'collection_name' => 'session',
             'entity_http_methods' => [
-                0 => 'GET',
-                1 => 'PATCH',
-                2 => 'PUT',
-                3 => 'DELETE',
+                0 => 'PUT',
+                1 => 'DELETE',
+                2 => 'GET',
             ],
             'collection_http_methods' => [
-                0 => 'GET',
-                1 => 'POST',
+                0 => 'POST',
             ],
             'collection_query_whitelist' => [],
             'page_size' => 25,
@@ -273,15 +271,15 @@ return [
                 'is_collection' => true,
             ],
             \SystemaAuth\V1\Rest\Session\SessionEntity::class => [
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'tokenId',
                 'route_name' => 'systema-auth.rest.session',
-                'route_identifier_name' => 'session_id',
+                'route_identifier_name' => 'tokenId',
                 'hydrator' => \Laminas\Hydrator\ObjectPropertyHydrator::class,
             ],
             \SystemaAuth\V1\Rest\Session\SessionCollection::class => [
-                'entity_identifier_name' => 'id',
+                'entity_identifier_name' => 'tokenId',
                 'route_name' => 'systema-auth.rest.session',
-                'route_identifier_name' => 'session_id',
+                'route_identifier_name' => 'tokenId',
                 'is_collection' => true,
             ],
             \SystemaAuth\V1\Rest\Address\AddressEntity::class => [
@@ -340,6 +338,22 @@ return [
                     'DELETE' => true,
                 ],
             ],
+            'SystemaAuth\\V1\\Rest\\Session\\Controller' => [
+                'collection' => [
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ],
+                'entity' => [
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => true,
+                    'PATCH' => false,
+                    'DELETE' => true,
+                ],
+            ],
         ],
     ],
     'api-tools-content-validation' => [
@@ -348,6 +362,9 @@ return [
         ],
         'SystemaAuth\\V1\\Rest\\Login\\Controller' => [
             'input_filter' => 'SystemaAuth\\V1\\Rest\\Login\\Validator',
+        ],
+        'SystemaAuth\\V1\\Rest\\Session\\Controller' => [
+            'input_filter' => 'SystemaAuth\\V1\\Rest\\Session\\Validator',
         ],
     ],
     'input_filter_specs' => [
@@ -362,7 +379,12 @@ return [
                         ],
                     ],
                 ],
-                'filters' => [],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                ],
                 'name' => 'label',
                 'description' => 'Role Label',
                 'field_type' => 'string',
@@ -390,12 +412,15 @@ return [
                 'validators' => [
                     0 => [
                         'name' => \Laminas\Validator\EmailAddress::class,
-                        'options' => [
-
-                        ],
+                        'options' => [],
                     ],
                 ],
-                'filters' => [],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                ],
                 'name' => 'email',
             ],
             1 => [
@@ -415,9 +440,51 @@ return [
             2 => [
                 'required' => false,
                 'validators' => [],
-                'filters' => [],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                ],
                 'name' => 'enabled',
                 'continue_if_empty' => true,
+            ],
+        ],
+        'SystemaAuth\\V1\\Rest\\Session\\Validator' => [
+            0 => [
+                'required' => true,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\EmailAddress::class,
+                        'options' => [],
+                    ],
+                ],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                ],
+                'name' => 'email',
+            ],
+            1 => [
+                'required' => true,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\StringLength::class,
+                        'options' => [
+                            'min' => '8',
+                            'max' => '25',
+                        ],
+                    ],
+                ],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                ],
+                'name' => 'password',
             ],
         ],
     ],

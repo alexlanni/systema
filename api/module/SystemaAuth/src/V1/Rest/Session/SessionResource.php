@@ -3,9 +3,29 @@ namespace SystemaAuth\V1\Rest\Session;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
+use Systema\Authentication\Session;
+use Systema\Entities\Token;
+use Systema\Service\SystemaService;
 
 class SessionResource extends AbstractResourceListener
 {
+    /** @var SystemaService $service */
+    private SystemaService $service;
+
+    private int $sessionTTL = 3660;
+
+    private string $privateKey;
+
+    public function __construct(SystemaService $service, int $sessionTTL, string $privateKey)
+    {
+        $this->service = $service;
+        /** @var int sessionTTL Durata della sessione */
+        $this->sessionTTL = (!empty($sessionTTL))?$sessionTTL:$this->sessionTTL;
+
+        /** @var string privateKey path della chiave privata */
+        $this->privateKey = $privateKey;
+    }
+
     /**
      * Create a resource
      *
@@ -14,7 +34,38 @@ class SessionResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+        //TODO: aggiungere auditog
+        try{
+            // Verifica le credenziali di accesso
+            $verificationResult = $this->service->validateLogin($data->email, $data->password);
+
+            // Creo la sessione a partire la Login Ricevuto
+            $session = new Session('',$verificationResult->getLoginId(),$verificationResult->getEmail(),$this->sessionTTL);
+
+            // Salvo il Token ...
+            $token = $this->service->createToken($session);
+
+            $session->setTokenId($token->getTokenId());
+
+            // .. e lo ritorno in formato cryptato
+            $sessionEntity = new SessionEntity();
+            $sessionEntity->setData($token->getData());
+            $sessionEntity->setTokenId($token->getTokenId());
+            return $sessionEntity;
+
+        } catch (\Exception $ex ){
+            switch ($ex->getCode()) {
+                case $this->service::ERR_EMAIL_NOT_FOUND:
+                    return new ApiProblem(404, $ex->getMessage());
+                    break;
+                case $this->service::ERR_INVALID_CREDENTIALS:
+                    return new ApiProblem(403, $ex->getMessage());
+                    break;
+                default:
+                    return new ApiProblem(500, $ex->getMessage());
+                    break;
+            }
+        }
     }
 
     /**
@@ -47,7 +98,38 @@ class SessionResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        try {
+            $check = $this->service->checkToken($id);
+
+            if(!$check instanceof Token)
+                return new ApiProblem(404, 'Invalid Session ID');
+
+            $session  = new SessionEntity();
+            $session->setTokenId($check->getTokenId())
+                ->setData($check->getData());
+
+            return $session;
+
+        }catch (\Exception $ex) {
+
+            switch ($ex->getCode()){
+
+                case $this->service::ERR_TOKEN_EXPIRED:
+                    return new ApiProblem(410, $ex->getMessage());
+                    break;
+                case $this->service::ERR_TOKEN_NOT_FOUND:
+                    return new ApiProblem(404, $ex->getMessage());
+                    break;
+                default:
+                    return new ApiProblem(400, 'Token not recognized');
+                    break;
+
+            }
+
+
+        }
+
+
     }
 
     /**

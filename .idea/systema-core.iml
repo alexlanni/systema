@@ -27,6 +27,7 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/orm" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/persistence" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/doctrine/reflection" />
+      <excludeFolder url="file://$MODULE_DIR$/api/vendor/firebase/php-jwt" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/herrera-io/json" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/herrera-io/phar-update" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/justinrainbow/json-schema" />

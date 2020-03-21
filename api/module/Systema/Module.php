@@ -7,6 +7,8 @@ use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Systema\Authorization\AuthorizationDelegatorFactory;
 use Systema\Authorization\AuthorizationListener;
+use Systema\Listener\AuditLogEvents;
+use Systema\Service\SystemaService;
 
 class Module implements ApiToolsProviderInterface
 {

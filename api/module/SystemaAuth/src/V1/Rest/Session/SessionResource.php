@@ -186,6 +186,36 @@ class SessionResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
+
+        try {
+            $check = $this->service->refreshToken($id);
+            if(!$check instanceof Token)
+                return new ApiProblem(404, 'Invalid Session ID');
+
+            $session  = new SessionEntity();
+            $session->setTokenId($check->getTokenId())
+                ->setData($check->getData());
+
+            return $session;
+
+        }catch (\Exception $ex) {
+
+            switch ($ex->getCode()){
+
+                case $this->service::ERR_TOKEN_EXPIRED:
+                    return new ApiProblem(410, $ex->getMessage());
+                    break;
+                case $this->service::ERR_TOKEN_NOT_FOUND:
+                    return new ApiProblem(404, $ex->getMessage());
+                    break;
+                default:
+                    return new ApiProblem(400, 'Token not recognized');
+                    break;
+
+            }
+
+
+        }
+
     }
 }

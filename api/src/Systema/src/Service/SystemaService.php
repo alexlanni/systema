@@ -30,7 +30,7 @@ class SystemaService
     private int $sessionTTL = 3600;
 
     /**
-     * PingResource constructor.
+     * SystemaService constructor.
      *
      * @param \Doctrine\ORM\EntityManager $orm
      * @param string $privateKeyFile
@@ -218,7 +218,8 @@ class SystemaService
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
      */
-    public function checkToken(string $tokenId): Token {
+    public function checkToken(string $tokenId): Token
+    {
         /** @var Token $token */
         $token = $this->getORM()->find(Token::class, $tokenId);
 
@@ -231,6 +232,29 @@ class SystemaService
         } else {
             throw new \Exception('Token not found',self::ERR_TOKEN_NOT_FOUND);
         }
+    }
+
+    public function refreshToken($tokenId)
+    {
+        $token = $this->getORM()->find(Token::class, $tokenId);
+        if ($token instanceof Token) {
+            // Rinnovo il token
+            $expireDate = new \DateTime($token->getExpireDate()->format('Y-m-d H:i:s'));
+            $expireDate->add(new \DateInterval('PT'.$this->sessionTTL.'S'));
+            $token->setExpireDate($expireDate);
+
+            try {
+                $this->getORM()->persist($token);
+                $this->getORM()->flush();
+                return $token;
+            }catch (\Exception $ex ){
+                throw new \Exception('General error in Token saving',self::ERR_TOKEN_NOT_FOUND);
+            }
+        } else {
+            throw new \Exception('Token not found',self::ERR_TOKEN_NOT_FOUND);
+        }
+
+        //$token->setExpireDate();
     }
 
 }

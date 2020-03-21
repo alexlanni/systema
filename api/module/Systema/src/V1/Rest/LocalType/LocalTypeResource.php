@@ -5,6 +5,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
+use Laminas\EventManager\EventManager;
 use Systema\Service\SystemaService;
 
 class LocalTypeResource extends AbstractResourceListener

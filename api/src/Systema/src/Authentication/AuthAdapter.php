@@ -88,9 +88,6 @@ class AuthAdapter extends AbstractAdapter
 
 
         }catch (\Exception $ex) {
-
-            echo $ex->getMessage();
-
             return new GuestIdentity();
         }
     }

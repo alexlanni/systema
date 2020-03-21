@@ -17,6 +17,7 @@ class Token
      *
      * @ORM\Column(name="token_id", type="string", length=255, nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $tokenId;
 

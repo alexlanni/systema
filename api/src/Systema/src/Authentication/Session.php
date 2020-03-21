@@ -127,7 +127,9 @@ class Session
 
         // Riscrivo le date di Access ed Expire
         $payoad['access'] = $payoad['access']->format('Y-m-d H:i:s');
-        $payoad['expire'] = $payoad['expire']->format('Y-m-d H:i:s');
+
+        // rimuovo l'expire date - delego al DB
+        unset($payoad['expire']);
 
         // Generazione del JWT
         $jwt = JWT::encode($payoad,$privateKey);

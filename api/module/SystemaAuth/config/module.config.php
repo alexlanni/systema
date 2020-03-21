@@ -7,6 +7,7 @@ return [
             \SystemaAuth\V1\Rest\Resource\ResourceResource::class => \SystemaAuth\V1\Rest\Resource\ResourceResourceFactory::class,
             \SystemaAuth\V1\Rest\Session\SessionResource::class => \SystemaAuth\V1\Rest\Session\SessionResourceFactory::class,
             \SystemaAuth\V1\Rest\Address\AddressResource::class => \SystemaAuth\V1\Rest\Address\AddressResourceFactory::class,
+            \Systema\Service\AuditLogService::class => \Systema\Service\AuditLogServiceFacotry::class
         ],
     ],
     'router' => [

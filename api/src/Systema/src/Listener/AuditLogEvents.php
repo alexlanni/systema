@@ -3,9 +3,6 @@
 
 namespace Systema\Listener;
 
-
-use Laminas\ApiTools\MvcAuth\Identity\AuthenticatedIdentity;
-use Laminas\Authentication\AuthenticationService;
 use Laminas\EventManager\EventInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\ListenerAggregateInterface;

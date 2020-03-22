@@ -1,0 +1,45 @@
+#
+# Use this dockerfile to run api-tools.
+#
+# Start the server using docker-compose:
+#
+#   docker-compose build
+#   docker-compose up
+#
+# You can install dependencies via the container:
+#
+#   docker-compose run api-tools composer install
+#
+# You can manipulate dev mode from the container:
+#
+#   docker-compose run api-tools composer development-enable
+#   docker-compose run api-tools composer development-disable
+#   docker-compose run api-tools composer development-status
+#
+# OR use plain old docker 
+#
+#   docker build -f Dockerfile-dev -t api-tools .
+#   docker run -it -p "8080:80" -v $PWD:/var/www api-tools
+#
+FROM php:7.4-apache
+ARG HOST_USER_UID
+RUN usermod -u ${HOST_USER_UID} www-data
+
+RUN apt-get update \
+ && apt-get install -y git zlib1g-dev libzip-dev \
+ && docker-php-ext-install zip pdo pdo_mysql mysqli \
+ && a2enmod rewrite \
+ && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
+ && mv /var/www/html /var/www/public \
+ && curl -sS https://getcomposer.org/installer \
+  | php -- --install-dir=/usr/local/bin --filename=composer \
+ && echo "AllowEncodedSlashes On" >> /etc/apache2/apache2.conf
+
+RUN yes | pecl install xdebug \
+    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.remote_connect_back=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.profiler_enable_trigger=1" >> /usr/local/etc/php/conf.d/xdebug.ini
+
+WORKDIR /var/www

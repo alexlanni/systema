@@ -1,6 +1,6 @@
 {
-    "name": "laminas-api-tools/api-tools-skeleton",
-    "description": "Skeleton Application for Laminas API Tools",
+    "name": "systema-core/api",
+    "description": "Systema Core API",
     "type": "project",
     "license": "BSD-3-Clause",
     "keywords": [

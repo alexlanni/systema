@@ -1,5 +1,23 @@
 version: "2"
 services:
+
+  frontend:
+    build:
+      context: ./frontend/.
+      dockerfile: ${PWD}/frontend/Dockerfile
+      args:
+        HOST_USER_UID: 1004
+    ports:
+      - "8060:80"
+    volumes:
+      - ./frontend/.:/var/www
+    links:
+      - datastoremaster
+      - api
+    networks:
+      - backend
+      - frontend
+
   api:
     build:
       context: ./api/.
@@ -12,9 +30,6 @@ services:
       - ./api/.:/var/www
     links:
       - datastoremaster
-
-
-
     networks:
       - backend
       - frontend

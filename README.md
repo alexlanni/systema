@@ -84,3 +84,22 @@ Aggiungere anche la configurazione delle strategie di autenticazione:
 Da notare che il nome dell'adapter `SystemaAuth` deve essere riportato nella proprietá `private array $providesTypes = ['SystemaAuth'];` del file AuthAdapter (Service).
 
 
+## EventManagement
+
+Per la gestione ad eventi e per la programmazione ad aspetti, si puo' creare un oggetto che implementa questa interfaccia:
+
+`ListenerAggregateInterface`
+
+Per innestare l'EventManager, nel `Module.php`:
+
+````
+    public function onBootstrap(MvcEvent $e)
+    {
+        $eventManager        = $e->getApplication()->getEventManager();
+        $alService = $e->getApplication()->getServiceManager()->get(AuditLogService::class);
+        $alListener = new AuditLogEvents($alService);
+        $alListener->attach(
+            $eventManager
+        );
+    }
+````

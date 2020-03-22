@@ -7,7 +7,7 @@ Accept: application/json
 
 GET http://{{host}}:{{port}}/local-type/1
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZGE2OTc3YzJhOThlYjdiZDAiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTIyIDEwOjM3OjEzIn0.RIW5uh5KTVTBgknbmpeoaSdrQYtgcyJbvj3Go2jG8bE
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiMTY3OTA5MWM1YTg4MGZhZmRjMWU5ZGY5YmU5MTg2NjMiLCJsb2dpbklkIjo2LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yMiAxMjoxMToxMSIsInJvbGVJZCI6M30.FeeR9I36y7SI2PKP3BoOJtKmu6OtZHbfvxaUvjRrLl8
 
 ### GET All Roles
 GET http://{{host}}:{{port}}/role
@@ -17,13 +17,13 @@ Accept: application/json
 GET http://{{host}}:{{port}}/role/1
 Accept: application/json
 
-### POST login
+### POST Creazione utente
 POST http://{{host}}:{{port}}/login
 Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "pippo@ciccio.com",
+  "email": "ale@ciccio.com",
   "password": "testtest123"
 }
 
@@ -33,7 +33,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "pippo@ciccio.com",
+  "email": "ale@ciccio.com",
   "password": "testtest123"
 }
 

@@ -27,7 +27,7 @@ class LoginEntity
         {
             $this->loginId = $object->getLoginId();
             $this->email = $object->getEmail();
-            $this->password = $object->getPassword();
+            $this->password = '**********';//$object->getPassword();
             $this->enabled = $object->isEnabled();
         }
     }

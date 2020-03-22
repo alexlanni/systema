@@ -72,7 +72,7 @@ class AuthAdapter extends AbstractAdapter
         if( $xAuthKey === false )
             return new GuestIdentity();
 
-        $session = new Session('', 0, '', $this->sessionTTL);
+        $session = new Session('', 0, '', $this->sessionTTL,0);
         $session->recreateFromJWT($xAuthKey->getFieldValue(), $this->keyFilePath);
 
         try {
@@ -81,7 +81,12 @@ class AuthAdapter extends AbstractAdapter
             if(!$check instanceof Token)
                 return new GuestIdentity();
 
-            $roleName = 'user'; //TODO: cambiare
+            $roles = $check->getLogin()->getRoles();
+            if (count($roles) > 0)
+                $roleName = $roles[0]->getLabel();
+            else
+                $roleName = 'user';
+
             $identity = new AuthenticatedIdentity($session);
             $identity->setName($roleName);
             return $identity;

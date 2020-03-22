@@ -4,6 +4,7 @@ namespace SystemaAuth\V1\Rest\Session;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
 use Systema\Authentication\Session;
+use Systema\Entities\Role;
 use Systema\Entities\Token;
 use Systema\Service\SystemaService;
 
@@ -34,13 +35,22 @@ class SessionResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        //TODO: aggiungere auditog
         try{
             // Verifica le credenziali di accesso
             $verificationResult = $this->service->validateLogin($data->email, $data->password);
 
+            // Ottengo il Ruolo
+            $roles = $verificationResult->getRoles();
+            if (count($roles) == 0)
+            {
+                return new ApiProblem(500, 'No roles applied for this LoginId');
+            }
+
+            /** @var Role $role */
+            $role = $roles[0];
+
             // Creo la sessione a partire la Login Ricevuto
-            $session = new Session('',$verificationResult->getLoginId(),$verificationResult->getEmail(),$this->sessionTTL);
+            $session = new Session('',$verificationResult->getLoginId(),$verificationResult->getEmail(),$this->sessionTTL, $role->getRoleId());
 
             // Salvo il Token ...
             $token = $this->service->createToken($session);

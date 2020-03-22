@@ -13,8 +13,9 @@ class Session
     public string $email;
     public \DateTime $access;
     public \DateTime $expire;
+    public int $roleId;
 
-    public function __construct(string $tokenId, int $loginId, string $email, int $sessionTTL)
+    public function __construct(string $tokenId, int $loginId, string $email, int $sessionTTL, int $roleId)
     {
         $access = new \DateTime('now');
         $expireDate = new \DateTime('now');
@@ -23,6 +24,7 @@ class Session
             ->setTokenId($tokenId)
             ->setLoginId($loginId)
             ->setAccess($access)
+            ->setRoleId($roleId)
             ->setExpire($expireDate);
     }
 
@@ -116,6 +118,24 @@ class Session
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getRoleId(): int
+    {
+        return $this->roleId;
+    }
+
+    /**
+     * @param int $roleId
+     * @return Session
+     */
+    public function setRoleId(int $roleId): Session
+    {
+        $this->roleId = $roleId;
+        return $this;
+    }
+
     public function getJWT($privateKeyFile) {
 
         // Leggo la chiave privata
@@ -155,6 +175,7 @@ class Session
             ->setExpire(new \DateTime($payload->expire))
             ->setLoginId($payload->loginId)
             ->setTokenId($payload->tokenId)
+            ->setRoleId($payload->roleId)
             ->setEmail($payload->email);
     }
 

@@ -186,5 +186,4 @@ create table token
 INSERT INTO systemadb.role (role_id, label, enabled) VALUES (1, 'superadmin', 1);
 INSERT INTO systemadb.role (role_id, label, enabled) VALUES (2, 'admin', 1);
 INSERT INTO systemadb.role (role_id, label, enabled) VALUES (3, 'user', 1);
-INSERT INTO systemadb.role (role_id, label, enabled) VALUES (4, 'guest', 1);
 

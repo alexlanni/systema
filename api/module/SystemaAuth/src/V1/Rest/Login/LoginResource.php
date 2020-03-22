@@ -22,12 +22,10 @@ class LoginResource extends AbstractResourceListener
      */
     public function create($data)
     {
-
         try {
             $newLogin = $this->service->registerNewLogin($data->email, $data->password);
 
             return new LoginEntity($newLogin);
-
         } catch ( \Exception $ex ){
             if ($ex->getCode() == $this->service::ERR_DATABASE_ERR) {
                 return new ApiProblem(500, $ex->getMessage());

@@ -43,6 +43,15 @@ class Login
     private $enabled = '0';
 
     /**
+     * @ORM\ManyToMany(targetEntity="Role")
+     * @ORM\JoinTable(name="login_has_role",
+     *     joinColumns={@ORM\JoinColumn(name="login_id", referencedColumnName="login_id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="role_id")}
+     * )
+     */
+    private $roles;
+
+    /**
      * @return int
      */
     public function getLoginId(): int
@@ -114,7 +123,22 @@ class Login
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
 
-
+    /**
+     * @param mixed $roles
+     * @return Login
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+        return $this;
+    }
 
 }

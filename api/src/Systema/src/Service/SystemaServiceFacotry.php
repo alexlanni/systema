@@ -12,6 +12,7 @@ class SystemaServiceFacotry
         $config = $services->get('config');
         $keyPath = $config['api-tools-mvc-auth']['authentication']['private_key'];
         $sessionTTL = $config['api-tools-mvc-auth']['authentication']['session_ttl'];
-        return new SystemaService($orm, $keyPath,$sessionTTL);
+        $newUserRoleId = $config['api-tools-mvc-auth']['authentication']['new_user_default_role_id'];
+        return new SystemaService($orm, $keyPath,$sessionTTL,$newUserRoleId);
     }
 }

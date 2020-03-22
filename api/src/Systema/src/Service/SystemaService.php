@@ -9,6 +9,7 @@ use Laminas\Crypt\Password\Bcrypt;
 use Systema\Authentication\Session;
 use Systema\Entities\LocalType;
 use Systema\Entities\Login;
+use Systema\Entities\LoginHasRole;
 use Systema\Entities\Role;
 use Systema\Entities\Token;
 use SystemaAuth\V1\Rest\Login\LoginEntity;
@@ -28,6 +29,7 @@ class SystemaService
     private \Doctrine\ORM\EntityManager $orm;
     private string $privateKeyFile;
     private int $sessionTTL = 3600;
+    private int $newUserRoleId = 3;
 
     /**
      * SystemaService constructor.
@@ -36,11 +38,12 @@ class SystemaService
      * @param string $privateKeyFile
      * @param int $sessionTTL
      */
-    public function __construct(\Doctrine\ORM\EntityManager $orm, string $privateKeyFile, int $sessionTTL)
+    public function __construct(\Doctrine\ORM\EntityManager $orm, string $privateKeyFile, int $sessionTTL, $newUserRoleId)
     {
         $this->orm = $orm;
         $this->privateKeyFile = $privateKeyFile;
         $this->sessionTTL = $sessionTTL;
+        $this->newUserRoleId = $newUserRoleId;
     }
 
     /**
@@ -77,13 +80,18 @@ class SystemaService
                 ->setPassword($securePass);
 
             try {
+                // Associazione Ruoli
+                $defaultUserRole = $this->getORM()->find(Role::class,$this->newUserRoleId);
+                $login->setRoles([$defaultUserRole]);
                 $this->getORM()->persist($login);
                 $this->getORM()->flush();
+
+                return $login;
             }catch (\Exception $ex ) {
                 throw new \Exception($ex->getMessage(),self::ERR_DATABASE_ERR);
             }
 
-            return $login;
+
         }else{
             throw new \Exception('Email already used',self::ERR_EMAIL_ALREADY_USED);
         }
@@ -193,6 +201,15 @@ class SystemaService
         }
     }
 
+    /**
+     * Aggiorna la scadenza del token
+     *
+     * @param $tokenId
+     * @return object|null
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
     public function refreshToken($tokenId)
     {
         $token = $this->getORM()->find(Token::class, $tokenId);

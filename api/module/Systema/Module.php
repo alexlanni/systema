@@ -8,6 +8,7 @@ use Laminas\Mvc\MvcEvent;
 use Systema\Authorization\AuthorizationDelegatorFactory;
 use Systema\Authorization\AuthorizationListener;
 use Systema\Listener\AuditLogEvents;
+use Systema\Service\AuditLogService;
 use Systema\Service\SystemaService;
 
 class Module implements ApiToolsProviderInterface
@@ -20,6 +21,8 @@ class Module implements ApiToolsProviderInterface
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager        = $e->getApplication()->getEventManager();
+
+        // Event Listener
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
@@ -29,6 +32,13 @@ class Module implements ApiToolsProviderInterface
             MvcAuthEvent::EVENT_AUTHORIZATION,
             new AuthorizationListener,
             100
+        );
+
+        // Logger
+        $alService = $e->getApplication()->getServiceManager()->get(AuditLogService::class);
+        $alListener = new AuditLogEvents($alService);
+        $alListener->attach(
+            $eventManager
         );
     }
 

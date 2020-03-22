@@ -7,7 +7,7 @@ Accept: application/json
 
 GET http://{{host}}:{{port}}/local-type/1
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZDdjZTdhMjVhMGJiNDE2MzAiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTIxIDE4OjExOjU0In0.9Rebu2vqdkoMwDe1YOIcBGO_KTpJy1W8RkAg0UZcWqI
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZGE2OTc3YzJhOThlYjdiZDAiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTIyIDEwOjM3OjEzIn0.RIW5uh5KTVTBgknbmpeoaSdrQYtgcyJbvj3Go2jG8bE
 
 ### GET All Roles
 GET http://{{host}}:{{port}}/role

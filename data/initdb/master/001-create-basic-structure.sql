@@ -1,9 +1,17 @@
-create table IF NOT EXISTS systemadb.actionlog
+create table systemadb.actionlog
 (
-    id int auto_increment primary key,
-    date datetime not null,
-    topic varchar(255) not null,
-    data longtext null
+    id                        int auto_increment
+        primary key,
+    date                      datetime      not null,
+    topic                     varchar(255)  not null,
+    verb                      varchar(20)   not null,
+    identity_type             varchar(20)   not null,
+    identity_role             varchar(20)   not null,
+    identity_id               int           not null,
+    identity_token            varchar(255)  not null,
+    client_ip                 varchar(100)  not null,
+    client_ua                 text          null,
+    response_http_status_code int default 0 not null
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `systemadb`.`place_type` (

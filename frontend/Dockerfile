@@ -26,8 +26,9 @@ ARG HOST_USER_UID
 RUN usermod -u ${HOST_USER_UID} www-data
 
 RUN apt-get update \
- && apt-get install -y git zlib1g-dev libzip-dev \
- && docker-php-ext-install zip pdo pdo_mysql mysqli \
+ && apt-get install -y git zlib1g-dev libzip-dev libicu-dev g++ zip \
+ && docker-php-ext-configure intl \
+ && docker-php-ext-install zip intl \
  && a2enmod rewrite \
  && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
  && mv /var/www/html /var/www/public \

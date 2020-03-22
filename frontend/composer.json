@@ -33,11 +33,14 @@
         "laminas/laminas-component-installer": "^2.1.2",
         "laminas/laminas-config-aggregator": "^1.2",
         "laminas/laminas-diactoros": "^1.8.7 || ^2.2.2",
+        "laminas/laminas-form": "^2.14",
+        "laminas/laminas-i18n": "^2.10",
+        "laminas/laminas-servicemanager": "^3.4",
         "laminas/laminas-stdlib": "^3.2.1",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "mezzio/mezzio": "^3.2.1",
+        "mezzio/mezzio-authentication": "^1.1",
         "mezzio/mezzio-helpers": "^5.3",
-        "laminas/laminas-servicemanager": "^3.4",
         "mezzio/mezzio-laminasrouter": "^3.0.1",
         "mezzio/mezzio-laminasviewrenderer": "^2.2"
     },
@@ -51,6 +54,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Systema\\": "src/Systema/src",
             "App\\": "src/App/src/",
             "Sso\\": "src/Sso/src/"
         }

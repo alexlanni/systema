@@ -35,6 +35,7 @@ class ConfigProvider
     {
         return [
             'invokables' => [
+                //'translate' => Translat
             ],
             'factories'  => [
                 Login::class => LoginFactory::class

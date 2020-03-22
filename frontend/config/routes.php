@@ -34,10 +34,14 @@ use Psr\Container\ContainerInterface;
  */
 return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
 
-    $app->get('/user/welcome', \App\Action\UserWelcomeAction::class, 'user.welcome');
-
     $app->post('/sso/login', \Sso\Handler\Login::class, 'login.user');
     $app->get('/sso/login', \Sso\Action\LoginFormAction::class, 'login.form');
+    $app->route('/sso/login/process', \Sso\Action\ProcessLoginAction::class, ['POST'], 'login.process');
 
+    $app->get('/user/welcome', [
+        \Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Action\UserWelcomeAction::class,
+    ],
+        'user.welcome');
 
 };

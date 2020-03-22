@@ -1,1 +1,33 @@
-Template for Sso\Action\LoginFormAction
+<?php
+/** @var \Systema\Form\LoginForm $form */
+$form = $this->form;
+
+$form->prepare();
+
+$form->setAttribute('action', $this->url('login.process'));
+
+$formLabel = $this->plugin('formLabel');
+
+echo $this->form()->openTag($form);
+?>
+<div class="form_element">
+<?php
+    $name = $form->get('email');
+    echo $formLabel->openTag() . $name->getOption('label');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+    echo $formLabel->closeTag();
+?></div>
+
+<div class="form_element">
+    <?php
+    $name = $form->get('password');
+    echo $formLabel->openTag() . $name->getOption('label');
+    echo $this->formInput($name);
+    echo $this->formElementErrors($name);
+    echo $formLabel->closeTag();
+    ?></div>
+
+<?= $this->formElement($form->get('send')) ?>
+
+<?= $this->form()->closeTag() ?>

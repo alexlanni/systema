@@ -57,7 +57,9 @@ class RoleResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        $query = $this->service->getFetchAllRoleQuery(['roleId'=>$id]);
+        /** @var \Systema\Entities\Repository\Role $roleRepo */
+        $roleRepo = $this->service->getORM()->getRepository(Role::class);
+        $query = $roleRepo->getFetchAllQuery(['roleId'=>$id]);
 
         try {
             $role = $query->getSingleResult();
@@ -78,7 +80,9 @@ class RoleResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        $query = $this->service->getFetchAllRoleQuery([]);
+        /** @var \Systema\Entities\Repository\Role $roleRepo */
+        $roleRepo = $this->service->getORM()->getRepository(Role::class);
+        $query = $roleRepo->getFetchAllQuery();
 
         return new RoleCollection($query);
     }

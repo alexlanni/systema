@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Role
  *
  * @ORM\Table(name="role", uniqueConstraints={@ORM\UniqueConstraint(name="role_label_uindex", columns={"label"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Systema\Entities\Repository\Role")
  */
 class Role
 {

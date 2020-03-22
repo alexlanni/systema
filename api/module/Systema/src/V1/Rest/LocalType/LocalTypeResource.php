@@ -6,6 +6,7 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
 use Laminas\EventManager\EventManager;
+use Systema\Entities\LocalType;
 use Systema\Service\SystemaService;
 
 class LocalTypeResource extends AbstractResourceListener
@@ -59,8 +60,9 @@ class LocalTypeResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        $id = $this->getIdentity();
-        $query = $this->systemaSrv->getFetchLocalTypesQuery(['localTypeId'=>$id]);
+        /** @var \Systema\Entities\Repository\LocalType $localTypeRepo */
+        $localTypeRepo = $this->systemaSrv->getORM()->getRepository(LocalType::class);
+        $query = $localTypeRepo->getFetchQuery(['localTypeId'=>$id]);
 
         try {
             $localType = $query->getSingleResult();
@@ -81,7 +83,9 @@ class LocalTypeResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        $query = $this->systemaSrv->getFetchLocalTypesQuery();
+        /** @var \Systema\Entities\Repository\LocalType $localTypeRepo */
+        $localTypeRepo = $this->systemaSrv->getORM()->getRepository(LocalType::class);
+        $query = $localTypeRepo->getFetchQuery();
 
         return  new LocalTypeCollection($query);
     }

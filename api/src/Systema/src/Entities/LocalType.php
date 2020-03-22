@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * LocalType
  *
  * @ORM\Table(name="local_type")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Systema\Entities\Repository\LocalType")
  */
 class LocalType
 {

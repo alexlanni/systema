@@ -34,8 +34,7 @@ use Psr\Container\ContainerInterface;
  */
 return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
 
-    $app->post('/sso/login', \Sso\Handler\Login::class, 'login.user');
-    $app->get('/sso/login', \Sso\Action\LoginFormAction::class, 'login.form');
+    $app->route('/sso/login', \Sso\Action\LoginFormAction::class, ['GET', 'POST'], 'login.form');
     $app->route('/sso/login/process', \Sso\Action\ProcessLoginAction::class, ['POST'], 'login.process');
 
     $app->get('/user/welcome', [

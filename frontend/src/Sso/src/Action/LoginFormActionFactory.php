@@ -6,11 +6,13 @@ namespace Sso\Action;
 
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
+use Systema\Middleware\Service\CoreApiService;
 
 class LoginFormActionFactory
 {
     public function __invoke(ContainerInterface $container) : LoginFormAction
     {
-        return new LoginFormAction($container->get(TemplateRendererInterface::class));
+        $coreApiService = $container->get(CoreApiService::class);
+        return new LoginFormAction($container->get(TemplateRendererInterface::class), $coreApiService);
     }
 }

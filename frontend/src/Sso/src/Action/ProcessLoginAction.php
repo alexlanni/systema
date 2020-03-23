@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
+use Systema\Form\LoginForm;
 
 class ProcessLoginAction implements RequestHandlerInterface
 {
@@ -24,6 +25,14 @@ class ProcessLoginAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
+        $params = $request->getParsedBody();
+        $form = new LoginForm();
+        $form->setData($params);
+        var_dump($form->isValid());
+        var_dump($form->getMessages());
+
+        die;
+
         // Do some work...
         // Render and return a response:
         return new HtmlResponse($this->renderer->render(

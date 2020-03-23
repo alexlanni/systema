@@ -4,7 +4,7 @@ $form = $this->form;
 
 $form->prepare();
 
-$form->setAttribute('action', $this->url('login.process'));
+$form->setAttribute('action', $this->url('login.form'));
 
 $formLabel = $this->plugin('formLabel');
 
@@ -29,5 +29,12 @@ echo $this->form()->openTag($form);
     ?></div>
 
 <?= $this->formElement($form->get('send')) ?>
+
+<?php if(count($this->errors)>0):
+    foreach ($this->errors as $error) { ?>
+        <div><?=$error->getMessage();?></div>
+<?php }
+endif;
+    ?>
 
 <?= $this->form()->closeTag() ?>

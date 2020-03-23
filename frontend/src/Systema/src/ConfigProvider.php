@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sso;
+namespace Systema;
 
 use Sso\Handler\Login;
 use Sso\Handler\LoginFactory;
@@ -25,6 +25,11 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
+            'systema' => [
+                'core-api' => [
+                    'url' => 'https://api'
+                ]
+            ]
         ];
     }
 
@@ -38,10 +43,7 @@ class ConfigProvider
                 //'translate' => Translat
             ],
             'factories'  => [
-                Action\LoginFormAction::class => Action\LoginFormActionFactory::class,
-                Action\ProcessLoginAction::class => Action\ProcessLoginActionFactory::class,
-                Login::class => LoginFactory::class,
-                Middleware\SsoMiddleware::class => Middleware\SsoMiddlewareFactory::class,
+                \Systema\Middleware\Service\CoreApiService::class => \Systema\Middleware\Service\CoreApiServiceFactory::class
             ],
         ];
     }
@@ -53,7 +55,7 @@ class ConfigProvider
     {
         return [
             'paths' => [
-                'sso'    => [__DIR__ . '/../templates/'],
+                //
             ],
         ];
     }

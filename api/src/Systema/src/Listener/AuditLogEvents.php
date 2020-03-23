@@ -59,6 +59,8 @@ class AuditLogEvents implements ListenerAggregateInterface
 
         // Ottengo il token
         $token = $request->getHeader('X-Systema-Auth');
+
+        $xForwardedFor = $request->getHeader('X-Forwarded-For', null);
         $requestUri = $request->getRequestUri();
         $method = $request->getMethod();
 
@@ -76,7 +78,7 @@ class AuditLogEvents implements ListenerAggregateInterface
         // Oggetto Server
         $server = $request->getServer();
 
-        $clientIp = $server['REMOTE_ADDR'];
+        $clientIp = ($xForwardedFor != null)?$xForwardedFor->getFieldValue():$server['REMOTE_ADDR'];
         $clientUA = $server['HTTP_USER_AGENT'];
 
         // Status Code Risposta

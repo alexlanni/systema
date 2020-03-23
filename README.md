@@ -5,9 +5,11 @@
 
 ## TODO
 
-- Aggiungere e configurare Doctrine
-- Configurare oauth2
-- Aggiungere mezzio
+- Configurare REDIS
+- Configurare Sessione su REDIS
+- Configurare gateway NGINX
+
+
 
 ## Doctrine
 
@@ -103,3 +105,4 @@ Per innestare l'EventManager, nel `Module.php`:
         );
     }
 ````
+

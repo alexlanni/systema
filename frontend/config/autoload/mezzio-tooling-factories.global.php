@@ -14,10 +14,6 @@ return [
     'dependencies' => [
         'factories' => [
             App\Action\UserWelcomeAction::class => App\Action\UserWelcomeActionFactory::class,
-            Sso\Action\LoginFormAction::class => Sso\Action\LoginFormActionFactory::class,
-            Sso\Action\ProcessLoginAction::class => Sso\Action\ProcessLoginActionFactory::class,
-            Sso\Login::class => Sso\LoginFactory::class,
-            Sso\Middleware\SsoMiddleware::class => Sso\Middleware\SsoMiddlewareFactory::class,
         ],
     ],
 ];

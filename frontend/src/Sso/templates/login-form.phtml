@@ -1,40 +1,44 @@
 <?php
-/** @var \Systema\Form\LoginForm $form */
-$form = $this->form;
 
-$form->prepare();
+if (!$this->isLogged) {
 
-$form->setAttribute('action', $this->url('login.form'));
+    /** @var \Systema\Form\LoginForm $form */
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url('login.form'));
+    $formLabel = $this->plugin('formLabel');
+    echo $this->form()->openTag($form);
+    ?>
+    <div class="form_element">
+        <?php
+        $name = $form->get('email');
+        echo $formLabel->openTag() . $name->getOption('label');
+        echo $this->formInput($name);
+        echo $this->formElementErrors($name);
+        echo $formLabel->closeTag();
+        ?></div>
+    <div class="form_element">
+        <?php
+        $name = $form->get('password');
+        echo $formLabel->openTag() . $name->getOption('label');
+        echo $this->formInput($name);
+        echo $this->formElementErrors($name);
+        echo $formLabel->closeTag();
+        ?></div>
 
-$formLabel = $this->plugin('formLabel');
+    <?= $this->formElement($form->get('send')) ?>
 
-echo $this->form()->openTag($form);
-?>
-<div class="form_element">
-<?php
-    $name = $form->get('email');
-    echo $formLabel->openTag() . $name->getOption('label');
-    echo $this->formInput($name);
-    echo $this->formElementErrors($name);
-    echo $formLabel->closeTag();
-?></div>
-
-<div class="form_element">
-    <?php
-    $name = $form->get('password');
-    echo $formLabel->openTag() . $name->getOption('label');
-    echo $this->formInput($name);
-    echo $this->formElementErrors($name);
-    echo $formLabel->closeTag();
-    ?></div>
-
-<?= $this->formElement($form->get('send')) ?>
-
-<?php if(count($this->errors)>0):
-    foreach ($this->errors as $error) { ?>
-        <div><?=$error->getMessage();?></div>
-<?php }
-endif;
+    <?php if (count($this->errors) > 0):
+        foreach ($this->errors as $error) { ?>
+            <div><?= $error->getMessage(); ?></div>
+        <?php }
+    endif;
     ?>
 
-<?= $this->form()->closeTag() ?>
+    <?= $this->form()->closeTag();
+
+}else{?>
+
+    <div>Benvenuto</div>
+
+<?php } ?>

@@ -24,6 +24,7 @@ class UserWelcomeAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
+
         // Do some work...
         // Render and return a response:
         return new HtmlResponse($this->renderer->render(

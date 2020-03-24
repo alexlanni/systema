@@ -28,7 +28,10 @@ class ConfigProvider
             'systema' => [
                 'core-api' => [
                     'url' => 'https://api'
-                ]
+                ],
+                'jwt-key-path' => dirname( __FILE__) . '/../../../data/.jwt-key',
+                'session-cookie-name' => 'SYSSESS',
+                'session-cookie-domain' => '.systema.dev'
             ]
         ];
     }

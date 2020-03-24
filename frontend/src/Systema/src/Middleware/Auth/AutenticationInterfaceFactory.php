@@ -10,6 +10,7 @@ class AutenticationInterfaceFactory
 {
     public function __invoke(ContainerInterface $container)
     {
-        return new AuthAdapter($container->get(TemplateRendererInterface::class));
+        $globalConfig = $container->get('config');
+        return new AuthAdapter($container->get(TemplateRendererInterface::class), $globalConfig['systema']);
     }
 }

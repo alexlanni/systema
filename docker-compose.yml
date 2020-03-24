@@ -1,6 +1,21 @@
 version: "2"
 services:
 
+  proxy:
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${PWD}/data/configs/proxy:/etc/nginx/conf.d
+      - ${PWD}/data/configs/proxy/certs:/etc/nginx/certs
+    links:
+      - frontend
+      - api
+    networks:
+      - backend
+      - frontend
+
   frontend:
     build:
       context: ./frontend/.

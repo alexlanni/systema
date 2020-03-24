@@ -12,7 +12,8 @@ class LoginFormActionFactory
 {
     public function __invoke(ContainerInterface $container) : LoginFormAction
     {
+        $globalConfig = $container->get('config');
         $coreApiService = $container->get(CoreApiService::class);
-        return new LoginFormAction($container->get(TemplateRendererInterface::class), $coreApiService);
+        return new LoginFormAction($container->get(TemplateRendererInterface::class), $coreApiService, $globalConfig['systema']);
     }
 }

@@ -106,3 +106,27 @@ Per innestare l'EventManager, nel `Module.php`:
     }
 ````
 
+## Authenticazione su mezzio
+
+Per innestare il controllo dell'autenticazione, inserire nella route della action desiderata `\Mezzio\Authentication\AuthenticationMiddleware::class`:
+
+`route.php`
+
+````
+$app->get('/user/welcome', [
+        \Mezzio\Authentication\AuthenticationMiddleware::class,
+        App\Action\UserWelcomeAction::class,
+    ],
+        'user.welcome');
+````
+
+A questo punto, in  `App\Action\UserWelcomeAction::class` si potra' accedere alla sessione in qeuesto modo:
+
+````
+public function handle(ServerRequestInterface $request) : ResponseInterface
+{
+    /** @var Session $user */
+    $user = $request->getAttribute(UserInterface::class);
+}
+````
+

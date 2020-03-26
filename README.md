@@ -5,9 +5,13 @@
 
 ## TODO
 
-- Configurare REDIS
-- Configurare Sessione su REDIS
-- Configurare gateway NGINX
+- Implementare Sessione su REDIS
+
+
+## Frontend TODO
+
+- Integrare SB Admin 2 con bootstrap 4
+- Integrare Grunt 
 
 
 
@@ -129,4 +133,8 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
     $user = $request->getAttribute(UserInterface::class);
 }
 ````
+
+## Authorization
+
+
 

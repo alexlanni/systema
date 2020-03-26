@@ -15,6 +15,9 @@ class CoreApiService
     /** @var Client $client Client HTTP */
     private $client;
 
+    /** @var string $sessionToken */
+    private string $sessionToken = '';
+
     public function __construct(array $config = [])
     {
         $this->config = $config;
@@ -33,9 +36,16 @@ class CoreApiService
             ->getHeaders()->addHeaderLine('Accept','application/json')
                           ->addHeaderLine('Content-Type', 'application/json');
 
-        if ($xForwardedFor != null) {
-            $request->getHeaders()->addHeaderLine('X-Forwarded-For',$xForwardedFor);
-        }
+        if(!empty($this->sessionToken))
+            $request->getHeaders()->addHeaderLine('X-Systema-Auth', $this->sessionToken);
+
+        if ($xForwardedFor == null)
+            $xForwardedFor = (isset($_SERVER['HTTP_X_FORWARDED_FOR']))?$_SERVER['HTTP_X_FORWARDED_FOR']:$_SERVER['REMOTE_ADDR'];
+
+        if (isset($_SERVER['HTTP_USER_AGENT']))
+            $request->getHeaders()->addHeaderLine('X-Forwarded-User-Agent', $_SERVER['HTTP_USER_AGENT']);
+
+        $request->getHeaders()->addHeaderLine('X-Forwarded-For',$xForwardedFor);
 
         return $request;
     }
@@ -54,18 +64,25 @@ class CoreApiService
     }
 
     /**
+     * Imposta il token di sessione da usare con le API
+     *
+     * @param string $sessionToken
+     */
+    public function setSessionToken(string $sessionToken)
+    {
+        $this->sessionToken = $sessionToken;
+    }
+
+    /**
      * Invoca il metodo POST/Session sulle API
      *
      * @param string $email
      * @param string $password
      * @return Response
      */
-    public function invokeSession(string $email, string $password): Response
+    public function invokeCreateSession(string $email, string $password): Response
     {
-
-        $clientIp = $_SERVER['REMOTE_ADDR'];
-
-        $request = $this->createBasicRequest('/session', Request::METHOD_POST, $clientIp);
+        $request = $this->createBasicRequest('/session', Request::METHOD_POST);
 
         $bodyPArams = json_encode([
             'email'=>$email,
@@ -73,7 +90,18 @@ class CoreApiService
         ]);
 
         $request->setContent($bodyPArams);
+        return $this->getClient()->send($request);
+    }
 
+    /**
+     * Invoca il check della sessione mediante API
+     *
+     * @param string $tokenId
+     * @return Response
+     */
+    public function invokeCheckSession(string $tokenId): Response
+    {
+        $request = $this->createBasicRequest(sprintf('/session/%s' , $tokenId), Request::METHOD_GET);
         return $this->getClient()->send($request);
     }
 

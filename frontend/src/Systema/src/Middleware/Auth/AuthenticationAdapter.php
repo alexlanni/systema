@@ -10,8 +10,9 @@ use Mezzio\Authentication\UserInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Template\TemplateRendererInterface;
+use Systema\Middleware\Service\CoreApiService;
 
-class AuthAdapter implements AuthenticationInterface
+class AuthenticationAdapter implements AuthenticationInterface
 {
 
     /** @var TemplateRendererInterface $renderer */
@@ -20,10 +21,14 @@ class AuthAdapter implements AuthenticationInterface
     /** @var array $config */
     private $config;
 
-    public function __construct(TemplateRendererInterface $renderer, array $config)
+    /** @var CoreApiService $coreApiService */
+    private CoreApiService $coreApiService;
+
+    public function __construct(TemplateRendererInterface $renderer, array $config, CoreApiService $coreApiService)
     {
         $this->renderer = $renderer;
         $this->config = $config;
+        $this->coreApiService = $coreApiService;
     }
 
     /**
@@ -44,14 +49,17 @@ class AuthAdapter implements AuthenticationInterface
         $cookieData = $cookies[$this->config['session-cookie-name']];
         $plainData = JWT::decode($cookieData,$privateKey,['HS256']);
 
-        // TODO: Verifica con Le API che la sessione sia attiva
+        // Verifico che la sessione non sia terminata.
+        $this->coreApiService->setSessionToken($cookieData);
+        $sessionCheck = $this->coreApiService->invokeCheckSession($plainData->tokenId);
+        if ($sessionCheck->getStatusCode() != 200) {
+            return null;
+        }
 
         $session = new Session();
         $session->setIdentity($plainData->loginId)
             ->setRoles($plainData->roleId)
             ->setDetails((array)$plainData);
-
-
         return $session;
     }
 

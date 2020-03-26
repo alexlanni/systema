@@ -7,7 +7,7 @@ namespace App\Action;
 use Laminas\Authentication\AuthenticationService;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
-use Systema\Middleware\Auth\AuthAdapter;
+use Systema\Middleware\Auth\AuthenticationAdapter;
 
 class UserWelcomeActionFactory
 {

@@ -6,6 +6,7 @@ return [
             \Systema\V1\Rest\Ping\PingResource::class => \Systema\V1\Rest\Ping\PingResourceFactory::class,
             \Systema\V1\Rest\LocalType\LocalTypeResource::class => \Systema\V1\Rest\LocalType\LocalTypeResourceFactory::class,
             \Systema\Authentication\AuthAdapter::class => \Systema\Authentication\AuthAdapterFactory::class,
+            \Systema\Authorization\AuthorizationService::class =>\Systema\Authorization\AuthorizationServiceFactory::class,
         ],
         'delegators' => [
             \Laminas\ApiTools\MvcAuth\Authentication\DefaultAuthenticationListener::class => [

@@ -55,7 +55,7 @@ class LoginFormAction implements RequestHandlerInterface
 
             // Se valido, procedo alla richiesta di Login Remoto
             if ($valid) {
-                $response = $this->coreApiService->invokeSession(
+                $response = $this->coreApiService->invokeCreateSession(
                     $form->get('email')->getValue(),
                     $form->get('password')->getValue()
                 );

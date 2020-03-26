@@ -127,6 +127,7 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/zfcampus/zf-console" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/zfcampus/zf-deploy" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

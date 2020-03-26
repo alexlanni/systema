@@ -2,12 +2,14 @@
 
 GET http://{{host}}:{{port}}/local-type
 Accept: application/json
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YTY1ZTlhYWUxYTI3ZDBiM2MiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yNiAyMDo0ODowNiIsInJvbGVJZCI6M30.eNiFYe9gkhFbWSe5ntw5GiJYpKo4OMORYBYRVLGnUao
 
 ### GET A local type
 
 GET http://{{host}}:{{port}}/local-type/1
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiMTY3OTA5MWM1YTg4MGZhZmRjMWU5ZGY5YmU5MTg2NjMiLCJsb2dpbklkIjo2LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yMiAxMjoxMToxMSIsInJvbGVJZCI6M30.FeeR9I36y7SI2PKP3BoOJtKmu6OtZHbfvxaUvjRrLl8
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YTIyMDc2YjMwNGI3MzI0M2YiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yNiAxODoyNTowNSIsInJvbGVJZCI6M30.YWuQpN8_Lv3S7qlbOD6vA2oZjes4Z_Hc-ba84q3iTeY
+
 
 ### GET All Roles
 GET http://{{host}}:{{port}}/role

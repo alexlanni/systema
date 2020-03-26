@@ -7,6 +7,7 @@ use Laminas\Mvc\ModuleRouteListener;
 use Laminas\Mvc\MvcEvent;
 use Systema\Authorization\AuthorizationDelegatorFactory;
 use Systema\Authorization\AuthorizationListener;
+use Systema\Authorization\RbacListener;
 use Systema\Listener\AuditLogEvents;
 use Systema\Service\AuditLogService;
 use Systema\Service\SystemaService;
@@ -29,9 +30,18 @@ class Module implements ApiToolsProviderInterface
         // Wire in our listener at priority >1 to ensure it runs before the
         // DefaultAuthorizationListener
         $eventManager->attach(
-            MvcAuthEvent::EVENT_AUTHORIZATION,
+            MvcAuthEvent::EVENT_AUTHORIZATION_POST,
             new AuthorizationListener,
             100
+        );
+
+
+        // Wire in our listener at priority >1 to ensure it runs before the
+        // DefaultAuthorizationListener
+        $eventManager->attach(
+            MvcEvent::EVENT_RENDER,
+            new RbacListener,
+            10
         );
 
         // Logger

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sso;
 
+use Laminas\Session;
 use Sso\Handler\Login;
 use Sso\Handler\LoginFactory;
 

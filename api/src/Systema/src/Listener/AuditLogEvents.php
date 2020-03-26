@@ -6,6 +6,7 @@ namespace Systema\Listener;
 use Laminas\EventManager\EventInterface;
 use Laminas\EventManager\EventManagerInterface;
 use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\Http\Headers;
 use Laminas\Mvc\MvcEvent;
 use Systema\Authentication\Session;
 use Systema\Service\AuditLogService;
@@ -58,9 +59,10 @@ class AuditLogEvents implements ListenerAggregateInterface
         $request = $params['request'];
 
         // Ottengo il token
-        $token = $request->getHeader('X-Systema-Auth');
+        $token = $request->getHeader('X-Systema-Auth', null);
 
         $xForwardedFor = $request->getHeader('X-Forwarded-For', null);
+        $xForwardedUserAgent = $request->getHeader('X-Forwarded-User-Agent', null);
         $requestUri = $request->getRequestUri();
         $method = $request->getMethod();
 
@@ -79,7 +81,7 @@ class AuditLogEvents implements ListenerAggregateInterface
         $server = $request->getServer();
 
         $clientIp = ($xForwardedFor != null)?$xForwardedFor->getFieldValue():$server['REMOTE_ADDR'];
-        $clientUA = $server['HTTP_USER_AGENT'];
+        $clientUA = ($xForwardedUserAgent != null)?$xForwardedUserAgent->getFieldValue():$server['HTTP_USER_AGENT'];
 
         // Status Code Risposta
         /** @var \Laminas\Http\PhpEnvironment\Response $response */
@@ -91,7 +93,7 @@ class AuditLogEvents implements ListenerAggregateInterface
             $identityType,
             $identityRole,
             $identityId,
-            $identitToken,
+            ($token != null)?$token->getFieldValue():$identitToken,
             $clientIp,
             $clientUA,
             $responseHttpStatusCode);

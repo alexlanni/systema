@@ -9,7 +9,8 @@
 namespace Systema\Authorization;
 
 use Laminas\ApiTools\Hal\Collection;
-use Laminas\ApiTools\MvcAuth\Identity\{GuestIdentity,AuthenticatedIdentity};
+use Laminas\ApiTools\MvcAuth\Identity\{AuthenticatedIdentity};
+use Laminas\Permissions\Rbac\AssertionInterface;
 use Laminas\Permissions\Rbac\Rbac;
 use Laminas\Permissions\Rbac\Role;
 
@@ -27,15 +28,18 @@ class AuthorizationService
     /** @var Rbac $systemaRbac */
     private $systemaRbac;
 
+    /** @var array $dynamicAssertions */
+    private array $dynamicAssertions = [];
+
     /**
      * AuthorizationService constructor.
      *
      * @param array $authorizationConfig
      */
-    public function __construct(array $authorizationConfig)
+    public function __construct(array $authorizationConfig, array $systemaAuth)
     {
         $this->authorizationConfig = $authorizationConfig;
-
+        $this->dynamicAssertions = $systemaAuth['owner-assertions'];
         $this->systemaRbac = new Rbac();
 
         // Definisco i ruoli
@@ -52,9 +56,15 @@ class AuthorizationService
 
         // Aggiungere i Permessi ai Ruoli
 
+        // Permesso di Accesso alle risorse
+        $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('accessEntity');
+        $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('accessCollection');
+
         // TODO: spostare in config
         $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('systema.rest.local-type');
+        $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('systema.rest.local-type');
 
+        $this->systemaRbac->getRole(self::ROLE_ADMIN)->addPermission('systema-auth.rest.role');
     }
 
     /**
@@ -65,9 +75,8 @@ class AuthorizationService
      * @param null $method
      * @return bool
      */
-    public function checkGrantOnResource(AuthenticatedIdentity $identity, $routeMatchName, $method = null) {
-
-        // TODO: gestire Method
+    public function checkGrantOnResource(AuthenticatedIdentity $identity, $routeMatchName, $method = null)
+    {
         return $this->systemaRbac->isGranted($identity->getRoleId(), $routeMatchName);
     }
 
@@ -77,10 +86,23 @@ class AuthorizationService
      *
      * @param AuthenticatedIdentity $identity
      * @param mixed $resource
+     * @return bool
      */
-    public function checkOwnerOnEntity(AuthenticatedIdentity $identity, $resource) {
-        // TODO: check
+    public function checkOwnerOnEntity(AuthenticatedIdentity $identity, $resource)
+    {
+        // Ottengo la classe dell'Assertion Da usare, partendo dalla classe dell'entita' in uso
+        $dynamicAssertionClassName = (isset($this->dynamicAssertions[get_class($resource)])) ?
+            $this->dynamicAssertions[get_class($resource)] :
+            $this->dynamicAssertions['default'];
 
+        /**
+         * Assertion Class
+         *
+         * @var AssertionInterface $dynamicAssertion
+         */
+        $dynamicAssertion = new $dynamicAssertionClassName($identity);
+        $dynamicAssertion->setEntity($resource);
+        return $this->systemaRbac->isGranted($identity->getRoleId(), 'accessEntity', $dynamicAssertion);
     }
 
     /**
@@ -90,9 +112,20 @@ class AuthorizationService
      * @param AuthenticatedIdentity $identity
      * @param mixed $resource
      */
-    public function checkOwnerOnCollection(AuthenticatedIdentity $identity, Collection $resource) {
+    public function checkOwnerOnCollection(AuthenticatedIdentity $identity, Collection $resource)
+    {
 
+        $dynamicAssertionClassName = (isset($this->dynamicAssertions[get_class($resource->getCollection())])) ?
+            $this->dynamicAssertions[get_class($resource->getCollection())] :
+            $this->dynamicAssertions['collection-default'];
+
+        /**
+         * Assertion Class
+         *
+         * @var AssertionInterface $dynamicAssertion
+         */
+        $dynamicAssertion = new $dynamicAssertionClassName($identity);
+        $dynamicAssertion->setCollection($resource);
+        return $this->systemaRbac->isGranted($identity->getRoleId(), 'accessCollection', $dynamicAssertion);
     }
-
-
 }

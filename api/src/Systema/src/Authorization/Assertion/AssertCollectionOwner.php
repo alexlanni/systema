@@ -9,11 +9,11 @@ use Laminas\Permissions\Rbac\Rbac;
 use Laminas\Permissions\Rbac\RoleInterface;
 use Systema\Authorization\AuthorizationService;
 
-class AssertOwner implements AssertionInterface
+class AssertCollectionOwner implements AssertionInterface
 {
     protected int $loginId;
     protected AuthenticatedIdentity $identity;
-    protected $entity;
+    protected $collection;
     protected $permissive = false;
 
 
@@ -24,11 +24,11 @@ class AssertOwner implements AssertionInterface
     }
 
     /**
-     * @param mixed $entity
+     * @param mixed $collection
      */
-    public function setEntity($entity)
+    public function setCollection($collection)
     {
-        $this->entity = $entity;
+        $this->collection = $collection;
     }
 
     protected function preliminaryAssertions(Rbac $rbac, RoleInterface $role, string $permission): bool
@@ -39,13 +39,7 @@ class AssertOwner implements AssertionInterface
         }
 
         // Verifiche Preliminari
-        if ($this->entity == null) {
-            return false;
-        }
-
-        // Se non esiste il metodo, non posso verificare la ownership
-        if (!method_exists($this->entity, 'getLoginId')) {
-            error_log('No getLoginId method defined in entity ' . get_class($this->entity));
+        if ($this->collection == null) {
             return false;
         }
 
@@ -55,6 +49,8 @@ class AssertOwner implements AssertionInterface
         ) {
             return true;
         }
+
+        return true;
     }
 
     /**
@@ -66,6 +62,9 @@ class AssertOwner implements AssertionInterface
             return false;
         }
 
-        return ($this->loginId === $this->entity->getLoginId());
+        // TODO:
+
+
+        //return ($this->loginId === $this->entity->getLoginId());
     }
 }

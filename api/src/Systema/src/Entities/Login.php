@@ -2,8 +2,6 @@
 
 namespace Systema\Entities;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Login
  *
@@ -124,7 +122,7 @@ class Login
     }
 
     /**
-     * @return mixed
+     * @return Role[]
      */
     public function getRoles()
     {

@@ -10,6 +10,7 @@ class AuthorizationServiceFactory
         /** @var SystemaService $systemaSrv */
         $config = $services->get('config');
         $authConfig = $config['api-tools-mvc-auth']['authorization'];
-        return new AuthorizationService($authConfig);
+        $systemaAuthConfig = $config['systema-auth'];
+        return new AuthorizationService($authConfig, $systemaAuthConfig);
     }
 }

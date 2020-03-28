@@ -4,10 +4,9 @@
 namespace Systema\Authorization;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
-use Laminas\ApiTools\Hal\Collection;
+use Laminas\ApiTools\ApiProblem\ApiProblemResponse;
 use Laminas\ApiTools\MvcAuth\Identity\AuthenticatedIdentity;
 use Laminas\ApiTools\MvcAuth\MvcAuthEvent;
-use Laminas\Http\Request;
 
 class AuthorizationListener
 {
@@ -26,14 +25,16 @@ class AuthorizationListener
                 ->getServiceManager()
                 ->get(AuthorizationService::class);
 
-            /** @var \Laminas\ApiTools\ContentNegotiation\Request $resource */
-            $resource = $mvcAuthEvent->getMvcEvent()->getRequest();
-
             $method = $mvcAuthEvent->getMvcEvent()->getRequest()->getMethod();
             $request = $mvcAuthEvent->getMvcEvent()->getRouteMatch()->getMatchedRouteName();
 
             $mvcAuthEvent->setIsAuthorized(
                 $authorizationService->checkGrantOnResource($identity, $request, $method)
+            );
+
+            $problem = new ApiProblem(401, 'Current role cannott access the ' . $request . ' resource.');
+            $mvcAuthEvent->getMvcEvent()->setResponse(
+                new ApiProblemResponse($problem)
             );
 
         }

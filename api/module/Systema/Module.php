@@ -10,7 +10,6 @@ use Systema\Authorization\AuthorizationListener;
 use Systema\Authorization\RbacListener;
 use Systema\Listener\AuditLogEvents;
 use Systema\Service\AuditLogService;
-use Systema\Service\SystemaService;
 
 class Module implements ApiToolsProviderInterface
 {
@@ -31,7 +30,7 @@ class Module implements ApiToolsProviderInterface
         // DefaultAuthorizationListener
         $eventManager->attach(
             MvcAuthEvent::EVENT_AUTHORIZATION_POST,
-            new AuthorizationListener,
+            new AuthorizationListener(),
             100
         );
 
@@ -40,7 +39,7 @@ class Module implements ApiToolsProviderInterface
         // DefaultAuthorizationListener
         $eventManager->attach(
             MvcEvent::EVENT_RENDER,
-            new RbacListener,
+            new RbacListener(),
             10
         );
 

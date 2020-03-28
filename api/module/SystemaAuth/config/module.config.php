@@ -309,7 +309,7 @@ return [
         'authorization' => [
             'SystemaAuth\\V1\\Rest\\Role\\Controller' => [
                 'collection' => [
-                    'GET' => false,
+                    'GET' => true,
                     'POST' => false,
                     'PUT' => false,
                     'PATCH' => false,

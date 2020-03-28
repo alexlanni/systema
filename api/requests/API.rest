@@ -2,18 +2,20 @@
 
 GET http://{{host}}:{{port}}/local-type
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YTY1ZTlhYWUxYTI3ZDBiM2MiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yNiAyMDo0ODowNiIsInJvbGVJZCI6M30.eNiFYe9gkhFbWSe5ntw5GiJYpKo4OMORYBYRVLGnUao
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YWVhMDU1Njc2MWUxOTk5ODIiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yOCAxMzo0MjoxNCIsInJvbGVJZCI6M30.eZcSD5pgpZPV0zZYTtD9-UkW2qffA0NX8vNWMY8gr_c
 
 ### GET A local type
 
 GET http://{{host}}:{{port}}/local-type/1
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YTIyMDc2YjMwNGI3MzI0M2YiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yNiAxODoyNTowNSIsInJvbGVJZCI6M30.YWuQpN8_Lv3S7qlbOD6vA2oZjes4Z_Hc-ba84q3iTeY
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YWVhMDU1Njc2MWUxOTk5ODIiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yOCAxMzo0MjoxNCIsInJvbGVJZCI6M30.eZcSD5pgpZPV0zZYTtD9-UkW2qffA0NX8vNWMY8gr_c
 
 
 ### GET All Roles
 GET http://{{host}}:{{port}}/role
 Accept: application/json
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZDlmNDBhNWFkNTg0NTAxMjQiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTI4IDE3OjMwOjExIiwicm9sZUlkIjoxfQ.3h-QYDOaTz25Jr0C0CDWiihCRFiARsAutMlnGxhsQOg
+
 
 ### GET Single Role
 GET http://{{host}}:{{port}}/role/1
@@ -35,7 +37,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "ale@ciccio.com",
+  "email": "pippo@ciccio.com",
   "password": "testtest123"
 }
 

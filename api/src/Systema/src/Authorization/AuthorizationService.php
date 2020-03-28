@@ -8,7 +8,6 @@
 
 namespace Systema\Authorization;
 
-use Laminas\ApiTools\Hal\Collection;
 use Laminas\ApiTools\MvcAuth\Identity\{AuthenticatedIdentity};
 use Laminas\Permissions\Rbac\AssertionInterface;
 use Laminas\Permissions\Rbac\Rbac;
@@ -60,11 +59,12 @@ class AuthorizationService
         $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('accessEntity');
         $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('accessCollection');
 
-        // TODO: spostare in config
-        $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('systema.rest.local-type');
-        $this->systemaRbac->getRole(self::ROLE_USER)->addPermission('systema.rest.local-type');
-
-        $this->systemaRbac->getRole(self::ROLE_ADMIN)->addPermission('systema-auth.rest.role');
+        // Aggiugo i permessi dal file di configurazione
+        foreach ($systemaAuth['rbac'] as $role => $permissions) {
+            foreach ($permissions as $permission) {
+                $this->systemaRbac->getRole($role)->addPermission($permission);
+            }
+        }
     }
 
     /**
@@ -111,12 +111,13 @@ class AuthorizationService
      *
      * @param AuthenticatedIdentity $identity
      * @param mixed $resource
+     * @return bool
      */
-    public function checkOwnerOnCollection(AuthenticatedIdentity $identity, Collection $resource)
+    public function checkOwnerOnCollection(AuthenticatedIdentity $identity, $resource)
     {
 
-        $dynamicAssertionClassName = (isset($this->dynamicAssertions[get_class($resource->getCollection())])) ?
-            $this->dynamicAssertions[get_class($resource->getCollection())] :
+        $dynamicAssertionClassName = (isset($this->dynamicAssertions[get_class($resource)])) ?
+            $this->dynamicAssertions[get_class($resource)] :
             $this->dynamicAssertions['collection-default'];
 
         /**

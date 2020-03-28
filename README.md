@@ -136,5 +136,22 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
 
 ## Authorization
 
+Per la gestione dell'Authorization si usa l'array di configurazione:
+
+````
+    'systema-auth' => [
+        // Array associativo tra Entity (in risposta) e AssertionClass
+        'owner-assertions' => [
+            'default' => \Systema\Authorization\Assertion\AssertOwner::class,
+            'collection-default' => \Systema\Authorization\Assertion\AssertCollectionOwner::class,
+            \Systema\V1\Rest\LocalType\LocalTypeEntity::class =>
+                \Systema\Authorization\Assertion\AssertGrantedEntity::class,
+            \Systema\V1\Rest\LocalType\LocalTypeCollection::class =>
+                \Systema\Authorization\Assertion\AssertGrantedCollection::class,
+            \SystemaAuth\V1\Rest\Role\RoleCollection::class =>
+                \Systema\Authorization\Assertion\AssertAdminsCollection::class,
+        ]
+    ],
+````
 
 

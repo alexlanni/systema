@@ -2,27 +2,49 @@
 
 GET http://{{host}}:{{port}}/local-type
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YWVhMDU1Njc2MWUxOTk5ODIiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yOCAxMzo0MjoxNCIsInJvbGVJZCI6M30.eZcSD5pgpZPV0zZYTtD9-UkW2qffA0NX8vNWMY8gr_c
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYzlmMGY4OTVmYjk4YWI5MTM2ZTJkOWJmY2Y5NzQ2ZDEiLCJsb2dpbklkIjo4LCJlbWFpbCI6ImFsZTJAY2ljY2lvLmNvbSIsImFjY2VzcyI6IjIwMjAtMDMtMjggMTk6MTE6MDAiLCJyb2xlSWQiOjN9.QsoCv8yal3t5xkyQxoBPad0HmoSqiX54UBMfdg6icLM
 
 ### GET A local type
 
 GET http://{{host}}:{{port}}/local-type/1
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YWVhMDU1Njc2MWUxOTk5ODIiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yOCAxMzo0MjoxNCIsInJvbGVJZCI6M30.eZcSD5pgpZPV0zZYTtD9-UkW2qffA0NX8vNWMY8gr_c
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYzlmMGY4OTVmYjk4YWI5MTM2ZTJkOWJmY2Y5NzQ2ZDEiLCJsb2dpbklkIjo4LCJlbWFpbCI6ImFsZTJAY2ljY2lvLmNvbSIsImFjY2VzcyI6IjIwMjAtMDMtMjggMTk6MTE6MDAiLCJyb2xlSWQiOjN9.QsoCv8yal3t5xkyQxoBPad0HmoSqiX54UBMfdg6icLM
 
 
 ### GET All Roles
 GET http://{{host}}:{{port}}/role
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZDlmNDBhNWFkNTg0NTAxMjQiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTI4IDE3OjMwOjExIiwicm9sZUlkIjoxfQ.3h-QYDOaTz25Jr0C0CDWiihCRFiARsAutMlnGxhsQOg
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYzlmMGY4OTVmYjk4YWI5MTM2ZTJkOWJmY2Y5NzQ2ZDEiLCJsb2dpbklkIjo4LCJlbWFpbCI6ImFsZTJAY2ljY2lvLmNvbSIsImFjY2VzcyI6IjIwMjAtMDMtMjggMTk6MTE6MDAiLCJyb2xlSWQiOjN9.QsoCv8yal3t5xkyQxoBPad0HmoSqiX54UBMfdg6icLM
 
 
 ### GET Single Role
 GET http://{{host}}:{{port}}/role/1
 Accept: application/json
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiOGYxNGU0NWZjZWVhMTY3YWJkMmYzOTdhODU2Mzk2NjEiLCJsb2dpbklkIjo3LCJlbWFpbCI6ImFsZUBjaWNjaW8uY29tIiwiYWNjZXNzIjoiMjAyMC0wMy0yOCAyMDoxNTozNSIsInJvbGVJZCI6M30.2iwiDKD6bpEYjv_2At0jWDjZOscyJcccnfVEaIMFG5U
+
 
 ### POST Creazione utente
 POST http://{{host}}:{{port}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "ale2@ciccio.com",
+  "password": "test12345"
+}
+
+### POST Autenticazione ADMIN
+POST http://{{host}}:{{port}}/session
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "pippo@ciccio.com",
+  "password": "testtest123"
+}
+
+### POST Autenticazione
+POST http://{{host}}:{{port}}/session
 Accept: application/json
 Content-Type: application/json
 
@@ -37,22 +59,22 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "pippo@ciccio.com",
-  "password": "testtest123"
+  "email": "ale2@ciccio.com",
+  "password": "test12345"
 }
 
 ### GET session
 
-GET http://{{host}}:{{port}}/session/a87ff679a2f3e71d2f4ca6d6552a1f91
+GET http://{{host}}:{{port}}/session/c9f0f895fb98ab91f37d32e8e1a3fa2c
 Accept: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZDJmNGNhNmQ2NTUyYTFmOTEiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTIxIDE1OjQxOjQyIiwiZXhwaXJlIjoiMjAyMC0wMy0yMSAxNjo0MTo0MiJ9.k5FTcbQNkcwZFXKaTDVNYd661pHsSzSh0ytGjfcR1ag
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZGI0NTYwODc3NGIyM2QzY2EiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTI4IDE4OjQwOjAxIiwicm9sZUlkIjoxfQ.Ag6lcB3Pt5wo13a7qR97LfcvYtzhtD3Y2ztHm9Jhbi4
 
 ### Update Session
 
-PUT http://{{host}}:{{port}}/session/a87ff679a2f3e71d7ce7a25a0bb41630
+PUT http://{{host}}:{{port}}/session/c9f0f895fb98ab91f37d32e8e1a3fa2c
 Accept: application/json
 Content-Type: application/json
-X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYTg3ZmY2NzlhMmYzZTcxZDdjZTdhMjVhMGJiNDE2MzAiLCJsb2dpbklkIjo0LCJlbWFpbCI6InBpcHBvQGNpY2Npby5jb20iLCJhY2Nlc3MiOiIyMDIwLTAzLTIxIDE4OjExOjU0In0.9Rebu2vqdkoMwDe1YOIcBGO_KTpJy1W8RkAg0UZcWqI
+X-Systema-Auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbklkIjoiYzlmMGY4OTVmYjk4YWI5MWYzN2QzMmU4ZTFhM2ZhMmMiLCJsb2dpbklkIjo4LCJlbWFpbCI6ImFsZTJAY2ljY2lvLmNvbSIsImFjY2VzcyI6IjIwMjAtMDMtMjggMTc6NTc6MDAiLCJyb2xlSWQiOjN9.O8UrkFsKgtgo7wkboC_K6Ood9bgdfwOC9tYIcsOZs9o
 
 {
   "email": "empty@email.com",

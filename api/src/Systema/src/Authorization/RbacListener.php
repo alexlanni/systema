@@ -8,6 +8,7 @@ use Laminas\ApiTools\Hal\Collection;
 use Laminas\ApiTools\MvcAuth\Identity\AuthenticatedIdentity;
 use Laminas\Http\Request;
 use Laminas\Mvc\MvcEvent;
+use Systema\Authorization\Interfaces\AssertOwnerInterface;
 
 /**
  * Class RbacListener
@@ -59,10 +60,25 @@ class RbacListener
              */
             $payload = $resource->getPayload();
 
-            if ($payload instanceof Collection) {
-                $isGranted = $authorizationService->checkOwnerOnCollection($identity, $payload);
-            } else {
-                $isGranted = $authorizationService->checkOwnerOnEntity($identity, $payload->getEntity());
+            $isGranted = false;
+            if (
+                $payload instanceof Collection &&
+                $payload->getCollection() instanceof AssertOwnerInterface
+            ) {
+                if ($payload->getCollection()->isAlwaysGranted()) {
+                    return true;
+                } else {
+                    $isGranted = $authorizationService
+                        ->checkOwnerOnCollection($identity, $payload->getCollection());
+                }
+
+            } elseif ($payload->getEntity() instanceof AssertOwnerInterface) {
+                if ($payload->getEntity()->isAlwaysGranted()) {
+                    $isGranted = true;
+                } else {
+                    $isGranted = $authorizationService
+                        ->checkOwnerOnEntity($identity, $payload->getEntity());
+                }
             }
 
             if (!$isGranted) {

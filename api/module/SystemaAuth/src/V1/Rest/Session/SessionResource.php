@@ -1,6 +1,7 @@
 <?php
 namespace SystemaAuth\V1\Rest\Session;
 
+use Exception;
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
 use Systema\Authentication\Session;
@@ -35,14 +36,13 @@ class SessionResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        try{
+        try {
             // Verifica le credenziali di accesso
             $verificationResult = $this->service->validateLogin($data->email, $data->password);
 
             // Ottengo il Ruolo
             $roles = $verificationResult->getRoles();
-            if (count($roles) == 0)
-            {
+            if (count($roles) == 0) {
                 return new ApiProblem(500, 'No roles applied for this LoginId');
             }
 
@@ -50,7 +50,13 @@ class SessionResource extends AbstractResourceListener
             $role = $roles[0];
 
             // Creo la sessione a partire la Login Ricevuto
-            $session = new Session('',$verificationResult->getLoginId(),$verificationResult->getEmail(),$this->sessionTTL, $role->getRoleId());
+            $session = new Session(
+                '',
+                $verificationResult->getLoginId(),
+                $verificationResult->getEmail(),
+                $this->sessionTTL,
+                $role->getRoleId()
+            );
 
             // Salvo il Token ...
             $token = $this->service->createToken($session);
@@ -59,11 +65,12 @@ class SessionResource extends AbstractResourceListener
 
             // .. e lo ritorno in formato cryptato
             $sessionEntity = new SessionEntity();
+            $sessionEntity->setLoginId($token->getLogin()->getLoginId());
             $sessionEntity->setData($token->getData());
             $sessionEntity->setTokenId($token->getTokenId());
             return $sessionEntity;
 
-        } catch (\Exception $ex ){
+        } catch (Exception $ex ) {
             switch ($ex->getCode()) {
                 case $this->service::ERR_EMAIL_NOT_FOUND:
                     return new ApiProblem(404, $ex->getMessage());
@@ -111,19 +118,18 @@ class SessionResource extends AbstractResourceListener
         try {
             $check = $this->service->checkToken($id);
 
-            if(!$check instanceof Token)
+            if (!$check instanceof Token) {
                 return new ApiProblem(404, 'Invalid Session ID');
+            }
 
             $session  = new SessionEntity();
             $session->setTokenId($check->getTokenId())
-                ->setData($check->getData());
+                ->setData($check->getData())
+                ->setLoginId($check->getLogin()->getLoginId());
 
             return $session;
-
-        }catch (\Exception $ex) {
-
-            switch ($ex->getCode()){
-
+        } catch (Exception $ex) {
+            switch ($ex->getCode()) {
                 case $this->service::ERR_TOKEN_EXPIRED:
                     return new ApiProblem(410, $ex->getMessage());
                     break;
@@ -135,11 +141,7 @@ class SessionResource extends AbstractResourceListener
                     break;
 
             }
-
-
         }
-
-
     }
 
     /**
@@ -208,7 +210,7 @@ class SessionResource extends AbstractResourceListener
 
             return $session;
 
-        }catch (\Exception $ex) {
+        }catch (Exception $ex) {
 
             switch ($ex->getCode()){
 

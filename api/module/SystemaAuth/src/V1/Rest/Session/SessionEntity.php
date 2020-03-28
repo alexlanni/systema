@@ -9,6 +9,9 @@ class SessionEntity
     /** @var string $data JWT data */
     public string $data;
 
+    /** @var int $loginId */
+    private int $loginId = 0;
+
     /**
      * @return string
      */
@@ -45,4 +48,22 @@ class SessionEntity
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getLoginId(): int
+    {
+        return $this->loginId;
+    }
+
+    /**
+     * @param int $loginId
+     * @return SessionEntity
+     */
+    public function setLoginId(int $loginId): SessionEntity
+    {
+        $this->loginId = $loginId;
+        return $this;
+    }
 }
+

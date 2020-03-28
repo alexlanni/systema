@@ -5,15 +5,12 @@ namespace Systema\Service;
 
 
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Laminas\Crypt\Password\Bcrypt;
 use Systema\Authentication\Session;
-use Systema\Entities\LocalType;
 use Systema\Entities\Login;
-use Systema\Entities\LoginHasRole;
 use Systema\Entities\Role;
 use Systema\Entities\Token;
-use SystemaAuth\V1\Rest\Login\LoginEntity;
-use function PHPUnit\Framework\isEmpty;
 
 class SystemaService
 {
@@ -62,7 +59,7 @@ class SystemaService
      * @param string $email
      * @param string $password
      * @return Login
-     * @throws \Exception
+     * @throws Exception
      */
     public function registerNewLogin(string $email, string $password): Login
     {
@@ -87,13 +84,13 @@ class SystemaService
                 $this->getORM()->flush();
 
                 return $login;
-            }catch (\Exception $ex ) {
-                throw new \Exception($ex->getMessage(),self::ERR_DATABASE_ERR);
+            }catch (Exception $ex ) {
+                throw new Exception($ex->getMessage(),self::ERR_DATABASE_ERR);
             }
 
 
         }else{
-            throw new \Exception('Email already used',self::ERR_EMAIL_ALREADY_USED);
+            throw new Exception('Email already used',self::ERR_EMAIL_ALREADY_USED);
         }
     }
 
@@ -103,7 +100,7 @@ class SystemaService
      * @param string $email
      * @param string $password
      * @return Login
-     * @throws \Exception
+     * @throws Exception
      */
     public function validateLogin(string $email, string $password): Login
     {
@@ -111,7 +108,7 @@ class SystemaService
         $foundLogins = $loginRepo->findBy(['email'=>$email]);
 
         if (count($foundLogins) != 1) {
-            throw new \Exception('Email is not registered',self::ERR_EMAIL_NOT_FOUND);
+            throw new Exception('Email is not registered',self::ERR_EMAIL_NOT_FOUND);
         }
 
         /** @var Login $foundLogin */
@@ -120,7 +117,7 @@ class SystemaService
         $checkPassword = $bcrypt->verify($password,$foundLogin->getPassword());
 
         if(!$checkPassword)
-            throw new \Exception('Invalid credentials',self::ERR_INVALID_CREDENTIALS);
+            throw new Exception('Invalid credentials',self::ERR_INVALID_CREDENTIALS);
         else
             return $foundLogin;
     }
@@ -171,8 +168,8 @@ class SystemaService
             $this->getORM()->persist($token);
             $this->getORM()->flush();
             return $token;
-        }catch( \Exception $ex ){
-            throw new \Exception('Error during Token generation:' . $ex->getMessage());
+        }catch( Exception $ex ){
+            throw new Exception('Error during Token generation:' . $ex->getMessage());
         }
     }
 
@@ -192,12 +189,13 @@ class SystemaService
 
         if ($token instanceof Token) {
             $now = new \DateTime('now');
-            if ($now > $token->getExpireDate())
-                throw new \Exception('Token is expired', self::ERR_TOKEN_EXPIRED);
+            if ($now > $token->getExpireDate()) {
+                throw new Exception('Token is expired', self::ERR_TOKEN_EXPIRED);
+            }
 
             return $token;
         } else {
-            throw new \Exception('Token not found',self::ERR_TOKEN_NOT_FOUND);
+            throw new Exception('Token not found', self::ERR_TOKEN_NOT_FOUND);
         }
     }
 
@@ -216,21 +214,23 @@ class SystemaService
         if ($token instanceof Token) {
             // Rinnovo il token
             $expireDate = new \DateTime($token->getExpireDate()->format('Y-m-d H:i:s'));
-            $expireDate->add(new \DateInterval('PT'.$this->sessionTTL.'S'));
-            $token->setExpireDate($expireDate);
 
             try {
+                $expireDate->add(new \DateInterval('PT' . $this->sessionTTL . 'S'));
+                $token->setExpireDate($expireDate);
+
                 $this->getORM()->persist($token);
                 $this->getORM()->flush();
                 return $token;
-            }catch (\Exception $ex ){
-                throw new \Exception('General error in Token saving',self::ERR_TOKEN_NOT_FOUND);
+            } catch (Exception $ex) {
+                throw new Exception(
+                    'General error in Token saving',
+                    self::ERR_TOKEN_NOT_FOUND
+                );
             }
         } else {
-            throw new \Exception('Token not found',self::ERR_TOKEN_NOT_FOUND);
+            throw new Exception('Token not found', self::ERR_TOKEN_NOT_FOUND);
         }
-
-        //$token->setExpireDate();
     }
 
 }

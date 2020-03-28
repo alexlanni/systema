@@ -43,12 +43,7 @@ class AssertCollectionOwner implements AssertionInterface
             return false;
         }
 
-        if (
-            $role->getName() == AuthorizationService::ROLE_ADMIN ||
-            $role->getName() == AuthorizationService::ROLE_SUPERADMIN
-        ) {
-            return true;
-        }
+
 
         return true;
     }
@@ -58,13 +53,17 @@ class AssertCollectionOwner implements AssertionInterface
      */
     public function assert(Rbac $rbac, RoleInterface $role, string $permission): bool
     {
+        if (
+            $role->getName() == AuthorizationService::ROLE_ADMIN ||
+            $role->getName() == AuthorizationService::ROLE_SUPERADMIN
+        ) {
+            return true;
+        }
+
         if (!$this->preliminaryAssertions($rbac, $role, $permission)) {
             return false;
         }
 
-        // TODO:
-
-
-        //return ($this->loginId === $this->entity->getLoginId());
+        return ($this->loginId === $this->collection->getLoginId());
     }
 }

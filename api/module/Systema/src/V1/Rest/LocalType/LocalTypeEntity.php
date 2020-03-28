@@ -8,7 +8,9 @@
 
 namespace Systema\V1\Rest\LocalType;
 
-class LocalTypeEntity
+use Systema\Authorization\Interfaces\AssertOwnerInterface;
+
+class LocalTypeEntity implements AssertOwnerInterface
 {
     /** @var int $localTypeId */
     public $localTypeId;
@@ -68,4 +70,21 @@ class LocalTypeEntity
     }
 
 
+    public function setLoginId(): void
+    {
+        // TODO: Implement setLoginId() method.
+    }
+
+    public function getLoginId(): int
+    {
+        // TODO: Implement getLoginId() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isAlwaysGranted(): bool
+    {
+        return true;
+    }
 }

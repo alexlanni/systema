@@ -153,17 +153,17 @@ return [
             'Systema\\V1\\Rest\\LocalType\\Controller' => [
                 'collection' => [
                     'GET' => false,
-                    'POST' => false,
-                    'PUT' => false,
-                    'PATCH' => false,
-                    'DELETE' => false,
+                    'POST' => true,
+                    'PUT' => true,
+                    'PATCH' => true,
+                    'DELETE' => true,
                 ],
                 'entity' => [
                     'GET' => false,
-                    'POST' => false,
-                    'PUT' => false,
-                    'PATCH' => false,
-                    'DELETE' => false,
+                    'POST' => true,
+                    'PUT' => true,
+                    'PATCH' => true,
+                    'DELETE' => true,
                 ],
             ],
         ],
@@ -173,12 +173,18 @@ return [
         'owner-assertions' => [
             'default' => \Systema\Authorization\Assertion\AssertOwner::class,
             'collection-default' => \Systema\Authorization\Assertion\AssertCollectionOwner::class,
-            \Systema\V1\Rest\LocalType\LocalTypeEntity::class =>
-                \Systema\Authorization\Assertion\AssertGrantedEntity::class,
-            \Systema\V1\Rest\LocalType\LocalTypeCollection::class =>
-                \Systema\Authorization\Assertion\AssertGrantedCollection::class,
-            \SystemaAuth\V1\Rest\Role\RoleCollection::class =>
-                \Systema\Authorization\Assertion\AssertAdminsCollection::class,
-        ]
+            \SystemaAuth\V1\Rest\Session\SessionEntity::class =>
+                \Systema\Authorization\Assertion\AssertSessionOwner::class,
+        ],
+        'rbac' => [
+          \Systema\Authorization\AuthorizationService::ROLE_USER => [
+              'systema.rest.local-type',
+              'systema-auth.rest.session',
+
+          ],
+          \Systema\Authorization\AuthorizationService::ROLE_ADMIN => [
+              'systema-auth.rest.role',
+          ]
+        ],
     ],
 ];

@@ -316,7 +316,7 @@ return [
                     'DELETE' => false,
                 ],
                 'entity' => [
-                    'GET' => false,
+                    'GET' => true,
                     'POST' => false,
                     'PUT' => true,
                     'PATCH' => false,

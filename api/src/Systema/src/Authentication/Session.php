@@ -152,7 +152,7 @@ class Session
         unset($payoad['expire']);
 
         // Generazione del JWT
-        $jwt = JWT::encode($payoad,$privateKey);
+        $jwt = JWT::encode($payoad, $privateKey);
         return $jwt;
     }
 
@@ -163,13 +163,15 @@ class Session
      * @param $privateKeyFile
      * @throws \Exception
      */
-    public function recreateFromJWT($jwt, $privateKeyFile) {
+    public function recreateFromJWT($jwt, $privateKeyFile)
+    {
         // Leggo la chiave privata
-        if(!is_file($privateKeyFile))
+        if (!is_file($privateKeyFile)) {
             throw new \Exception('Private Key File is unacessible');
+        }
 
         $privateKey = file_get_contents($privateKeyFile);
-        $payload =  JWT::decode($jwt,$privateKey,['HS256']);
+        $payload =  JWT::decode($jwt, $privateKey, ['HS256']);
 
         $this->setAccess(new \DateTime($payload->access))
             ->setExpire(new \DateTime($payload->expire))

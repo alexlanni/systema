@@ -16,6 +16,7 @@ return [
             'map' => [
                 'Systema\\V1' => 'SystemaAuth',
                 'SystemaAuth\\V1' => 'SystemaAuth',
+
             ],
         ],
     ],

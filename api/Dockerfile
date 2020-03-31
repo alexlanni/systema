@@ -21,6 +21,7 @@
 #   docker build -f Dockerfile-dev -t api-tools .
 #   docker run -it -p "8080:80" -v $PWD:/var/www api-tools
 #
+
 FROM php:7.4-apache
 ARG HOST_USER_UID
 RUN usermod -u ${HOST_USER_UID} www-data
